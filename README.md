@@ -1,6 +1,18 @@
+# MAF Replication on the MemeDecode Dataset
+
+A replication of **"A Multimodal Framework to Detect Target Aware Aggression in Memes"**
+(Ahsan et al., EACL 2024) — the **MAF** (Multimodal Attentive Fusion) model — trained and
+evaluated on *our* meme dataset instead of the authors' MIMOSA corpus.
+
+- Paper: `../Published Work/Actual_Paper_Regarding_meme decode_2024.eacl-long.153.pdf`
+- Original code: `../Published Work/Bengali-Aggression-Memes`
+- Our data: `../Train` (2,903 memes) and `../Test` (400 labelled memes)
+
+---
+
 ## 1. What had to be rebuilt, and why
 
-The original repository ships **no OCR stage**. MAF is a multimodal
+The original repository ships **no OCR stage**. This is easy to miss: MAF is a multimodal
 model that consumes an image *and its caption*, and the released MIMOSA CSVs already
 contain finished captions, so the code simply reads a `Captions` column and never asks
 where it came from.
@@ -21,6 +33,7 @@ here is therefore three stages, where the original had one:
 | 1b. Denoise *(optional)* | `Scripts/clean_captions.py` | `Dataset/captions_clean.csv` — automated stand-in for the paper's manual correction |
 | 2. Splits | `Scripts/prepare_dataset.py` | `training_set.csv`, `validation_set.csv`, `testing_set.csv` |
 | 3. Train + evaluate | `Scripts/main.py` | `Outputs/results_*.json`, `Outputs/predictions_*.csv` |
+| 4. Submission | `Scripts/generate_submission.py` (from a checkpoint) or `Scripts/predictions_to_submission.py` (from a predictions CSV) | `Outputs/submission*.csv` — for the Kaggle competition, see §8 |
 
 Stages 2 and 3 produce exactly the file format and run exactly the model the original
 codebase does.
@@ -305,6 +318,114 @@ demonstrates that the pipeline runs, nothing more.
 
 ---
 
+## 7. A note on compute
+
+Training MAF fine-tunes all 110M parameters of Bangla-BERT (CLIP stays frozen). On this
+CPU-only machine, the paper's setup — batch 4, 20 epochs, ~2,400 training memes — is a
+multi-day run and is not recommended locally.
+
+`Scripts/MAF_Replication_Colab.ipynb` and `Scripts/MAF_Replication_Kaggle.ipynb` run the
+identical code on a free Colab or Kaggle GPU, where the same configuration finishes in
+roughly 1-2 hours. Use `--subset` locally to verify the pipeline works, then run the real
+training on whichever platform you prefer.
+
+Both notebooks read from the same `Replication.zip`, but the platforms differ in how data
+gets in and results come out:
+
+|  | Colab | Kaggle |
+|---|---|---|
+| Upload as | a file in Google Drive | a **Dataset** (kaggle.com/datasets -> New Dataset) |
+| Mount | Drive is mounted, then the zip is unzipped into `/content` | the dataset is auto-extracted and mounted **read-only** at `/kaggle/input/<slug>` |
+| GPU quota | varies by plan | ~30 hrs/week free, ~9-12 hr session limit |
+| Getting results out | explicit copy back to Drive (last cell) | automatic - anything under `/kaggle/working` is kept as the notebook's Output on commit |
+
+Kaggle's `/kaggle/input` being read-only is why that notebook copies only `Scripts/` (a
+few hundred KB) into the writable `/kaggle/working` and reads `Dataset/` (365 MB of
+images) straight from the mount by absolute path, rather than duplicating everything the
+way the Colab notebook does.
+
+### Packaging for Colab / Kaggle
+
+Upload a **zip**, not the folder — Drive uploads 3,303 individual files very slowly, and
+Colab reading them back through the Drive FUSE mount is slow again. One archive uploads
+once and unpacks onto Colab's local disk in seconds.
+
+```powershell
+powershell -File Scripts\make_colab_zip.ps1
+```
+
+Then put the resulting `D:\MemeDecode\Replication.zip` in Drive at
+`MyDrive/MemeDecode/Replication.zip`, which is where the notebook looks.
+
+> **Do not build this archive with `Compress-Archive`.** Windows PowerShell 5.1 writes ZIP
+> entry names with backslash separators (`Dataset\Img\x.jpg`), which violates the ZIP spec.
+> Linux `unzip` — which is what Colab runs — then reads each name as one flat filename
+> containing literal backslashes, so the directory structure is never recreated and the
+> notebook cannot find `Dataset/Img`. `make_colab_zip.ps1` builds the archive through .NET
+> and writes the entry names itself, guaranteeing forward slashes. It also excludes
+> `.cache/` (~1 GB of model downloads that Colab re-fetches anyway).
+
+---
+
+## 8. Generating a Kaggle competition submission
+
+`D:\MemeDecode\sample_submission.csv` fixes the exact format the competition scores
+against: columns `Image_name,Target`, one row per test image, using the **original
+`Train/Train.csv` vocabulary** — `Neutral`, `Genders`, `Politics`, `Religion` — which is a
+*different* string set from the paper's canonical labels used internally
+(`non-aggressive`, etc.) and different again from `Test/test.csv`'s own vocabulary
+(`NonAggressive`, etc.). `generate_submission.py` handles that translation; see the
+mapping table below.
+
+**A submission file contains predictions only.** It is built by a script
+(`generate_submission.py`) that never reads a label column at all — only `image_name` and
+`Captions` go in, matching the separation described in §5: the model's `forward()` has no
+`label` parameter, so nothing here could leak ground truth even by accident.
+
+### Route A — from a predictions CSV (no checkpoint, no GPU, seconds)
+
+`main.py`'s final evaluation runs on `testing_set.csv`, which contains exactly the 400
+images `sample_submission.csv` lists. Every full run's `Outputs/predictions_<run>.csv`
+therefore already holds that run's prediction for each submission image:
+
+```bash
+cd Scripts
+python predictions_to_submission.py --predictions ../Outputs/predictions_maf_*.csv
+```
+
+This writes `Outputs/submission_<run>.csv` for each run. It reads only `image_name` and
+`pred_label`, ignores the `Label`/`true_id` columns, and refuses `--subset` smoke-test files
+because they don't cover all 400 images. The predictions are the same ones
+`generate_submission.py` would produce from that run's best checkpoint.
+
+### Route B — from a trained checkpoint
+
+Each run saves `Saved_Models/maf_model_<run_name>.pth`. Early versions of the notebooks
+wrote every run to one shared `maf_model.pth`, so running `maf_full`, `maf_paper_attn` and
+`maf_fixed_sched` in sequence left only the last run's model on disk. Route A still works
+for those runs.
+
+```bash
+cd Scripts
+python generate_submission.py \
+    --checkpoint ../Saved_Models/maf_model_maf_full.pth \
+    --sample_submission ../../sample_submission.csv \
+    --out ../Outputs/submission.csv
+```
+
+`--sample_submission` defaults to `../../sample_submission.csv` (i.e.
+`D:\MemeDecode\sample_submission.csv`), so on this machine the flag can usually be
+dropped. `--attn_variant` and `--heads` must match whatever the checkpoint was **trained**
+with — the defaults match `main.py`'s defaults, so if you didn't override them for
+training, don't override them here either.
+
+The script validates its own output before writing: same columns as
+`sample_submission.csv`, same 400 rows in the same order, every value inside
+`{Neutral, Genders, Politics, Religion}`. `Scripts/_check_submission.py` proves the whole
+path end-to-end with a freshly-initialized (untrained) model, if you want to re-verify the
+mechanics before a long training run — its predictions are meaningless, but the file
+shape is real.
+
 ### Label mapping (internal -> submission)
 
 | Model output index | `dataset.TARGET_NAMES` | Submitted as |
@@ -317,3 +438,51 @@ demonstrates that the pipeline runs, nothing more.
 Then upload `Outputs/submission.csv` on the competition's Submit Predictions page.
 
 ---
+
+## 9. File map
+
+```
+Replication/
+├── Dataset/
+│   ├── Img/                    3,303 memes (Train + Test unified)
+│   ├── captions_raw.csv        Stage 1 output: image_name, Captions
+│   ├── training_set.csv        Stage 2 output: image_name, Captions, Label
+│   ├── validation_set.csv
+│   └── testing_set.csv
+├── Scripts/
+│   ├── ocr_captions.py         Stage 1 - pytesseract caption extraction
+│   ├── clean_captions.py       Stage 1b - optional caption denoiser
+│   ├── probe_ocr.py            Diagnostic - compares Tesseract configurations
+│   ├── prepare_dataset.py      Stage 2 - label mapping, splits, paper Tables 1-3
+│   ├── _paths.py               Redirects HF / CLIP caches off the C: drive
+│   ├── _check_env.py           Diagnostic - verifies the installed stack imports
+│   ├── _check_model.py         Diagnostic - builds MAF, runs a synthetic fwd/bwd pass
+│   ├── dataset.py              Port of the original dataset.py
+│   ├── models.py               Port of the original models.py (MAF)
+│   ├── evaluation.py           Port of the original evaluation.py
+│   ├── main.py                 Stage 3 - entry point, metrics, result files
+│   ├── generate_submission.py  Stage 4 - submission.csv from a checkpoint
+│   ├── predictions_to_submission.py  Stage 4 - submission_<run>.csv from a predictions CSV
+│   ├── submission_format.py    Shared label mapping + submission validation
+│   ├── _check_submission.py    Diagnostic - proves the submission path end-to-end
+│   ├── make_colab_zip.ps1      Packs Replication.zip for the Colab/Kaggle upload
+│   ├── MAF_Replication_Colab.ipynb
+│   └── MAF_Replication_Kaggle.ipynb
+├── Saved_Models/               maf_model_<run_name>.pth, one per run (best validation accuracy)
+├── Outputs/                    results_*.json, predictions_*.csv
+└── requirements.txt
+```
+
+---
+
+## 10. Citation
+
+```bibtex
+@inproceedings{ahsan2024multimodal,
+  title={A Multimodal Framework to Detect Target Aware Aggression in Memes},
+  author={Ahsan, Shawly and Hossain, Eftekhar and Sharif, Omar and Das, Avishek and Hoque, Mohammed Moshiul and Dewan, M},
+  booktitle={Proceedings of the 18th Conference of the European Chapter of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages={2487--2500},
+  year={2024}
+}
+```

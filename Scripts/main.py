@@ -12,6 +12,8 @@ Changes from the original:
   3. Results, the confusion matrix and per-meme predictions are written to Outputs/ so a
      run is reproducible after the terminal is closed.
   4. --subset runs the whole pipeline on a handful of memes, for a fast end-to-end check.
+  5. The full console output of every run is also written to Logs/<run_name>_<timestamp>.log,
+     so the per-epoch training curve survives the terminal being closed. --no_log opts out.
 
 Usage:
     python main.py                        # full run, paper hyperparameters
@@ -217,6 +219,16 @@ if __name__ == "__main__":
                         help="step the LR scheduler per batch instead of per epoch")
     parser.add_argument("--subset", type=int, default=0,
                         help="use only N rows per split - for a fast end-to-end smoke test")
+    parser.add_argument("--no_log", action="store_true",
+                        help="do not tee console output to Logs/")
 
     args = parser.parse_args()
+
+    # Start capturing console output before anything is printed, so the log holds the
+    # whole run rather than starting partway through it.
+    if not args.no_log:
+        import _logging
+
+        _logging.start(args.run_name)
+
     main(args)

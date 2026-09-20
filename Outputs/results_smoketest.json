@@ -1,0 +1,92 @@
+{
+  "run_name": "smoketest",
+  "checkpoint": "maf_model_smoketest.pth",
+  "accuracy": 0.20833333333333334,
+  "weighted_f1": 0.14583333333333334,
+  "macro_f1": 0.14583333333333331,
+  "weighted_precision": 0.125,
+  "weighted_recall": 0.20833333333333334,
+  "mmae": 1.5,
+  "per_class": {
+    "NoAg": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 6.0
+    },
+    "GAg": {
+      "precision": 0.3333333333333333,
+      "recall": 0.3333333333333333,
+      "f1-score": 0.3333333333333333,
+      "support": 6.0
+    },
+    "PAg": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 6.0
+    },
+    "RAg": {
+      "precision": 0.16666666666666666,
+      "recall": 0.5,
+      "f1-score": 0.25,
+      "support": 6.0
+    },
+    "accuracy": 0.20833333333333334,
+    "macro avg": {
+      "precision": 0.125,
+      "recall": 0.20833333333333331,
+      "f1-score": 0.14583333333333331,
+      "support": 24.0
+    },
+    "weighted avg": {
+      "precision": 0.125,
+      "recall": 0.20833333333333334,
+      "f1-score": 0.14583333333333334,
+      "support": 24.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      0,
+      1,
+      0,
+      5
+    ],
+    [
+      0,
+      2,
+      0,
+      4
+    ],
+    [
+      0,
+      0,
+      0,
+      6
+    ],
+    [
+      0,
+      3,
+      0,
+      3
+    ]
+  ],
+  "target_names": [
+    "NoAg",
+    "GAg",
+    "PAg",
+    "RAg"
+  ],
+  "hyperparameters": {
+    "max_len": 70,
+    "batch_size": 4,
+    "heads": 16,
+    "epochs": 1,
+    "lr": 5e-05,
+    "seed": 42,
+    "attn_variant": "code",
+    "fix_scheduler": false,
+    "subset": 24
+  }
+}

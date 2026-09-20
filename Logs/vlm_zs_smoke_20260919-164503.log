@@ -1,0 +1,49 @@
+# started  : 2026-09-19T16:45:03
+# command  : vlm_zeroshot.py --subset 20 --run_name vlm_zs_smoke
+# cwd      : /home/raiyan/PR/memedecoder_2/Scripts
+# python   : 3.12.14
+#
+Console log     -> /home/raiyan/PR/memedecoder_2/Logs/vlm_zs_smoke_20260919-164503.log
+SUBSET MODE: 20 rows (smoke test, not a real result)
+Split           : testing_set | 20 memes
+Model           : Qwen/Qwen3-VL-8B-Instruct
+Load in 4-bit   : False
+Captions given  : False (image-only is the point of this baseline)
+Decode          : letter
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|██████████| 750/750 [00:09<00:00, 76.06it/s] 
+Some parameters are on the meta device because they were offloaded to the cpu.
+Model loaded. VRAM allocated: 12.8 GB
+Letter token ids: [[32, 362], [33, 425], [34, 356], [35, 422]]
+Classifying: 100%|██████████| 20/20 [00:28<00:00,  1.41s/it]
+Classification Report :
+              precision    recall  f1-score   support
+
+        NoAg      1.000     0.400     0.571         5
+         GAg      0.714     1.000     0.833         5
+         PAg      0.600     0.600     0.600         5
+         RAg      0.667     0.800     0.727         5
+
+    accuracy                          0.700        20
+   macro avg      0.745     0.700     0.683        20
+weighted avg      0.745     0.700     0.683        20
+
+Accuracy :  0.7
+Precison :  0.7452380952380953
+Recall :  0.7
+F1 :  0.6830086580086581
+Macro F1 :  0.6830086580086581
+MMAE:  0.5499999999999999
+
+Confusion matrix (rows = true, cols = predicted)
+      NoAg  GAg  PAg  RAg
+NoAg     2    0    2    1
+GAg      0    5    0    0
+PAg      0    1    3    1
+RAg      0    1    0    4
+
+Saved results   -> /home/raiyan/PR/memedecoder_2/Outputs/results_vlm_zs_smoke.json
+Saved preds     -> /home/raiyan/PR/memedecoder_2/Outputs/predictions_vlm_zs_smoke.csv
+Total time : 52.03s
+#
+# finished : 2026-09-19T16:45:55

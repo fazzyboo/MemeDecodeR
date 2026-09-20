@@ -1,0 +1,7 @@
+python predictions_to_submission.py \
+        --predictions ../Outputs/predictions_vlm_finetuned.csv \
+        --sample_submission ../sample_submission.csv
+
+
+
+source /home/raiyan/anaconda3/etc/profile.d/conda.sh && conda activate memedecoder && cd /home/raiyan/PR/memedecoder_2/Scripts && python vlm_zeroshot.py --split validation_set --run_name vlm_zeroshot_val 2>&1 | tr '\r' '\n' | grep -E "Accuracy :|Macro F1|MMAE|F1 :" 

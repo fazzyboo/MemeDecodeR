@@ -1,0 +1,79 @@
+# started  : 2026-09-19T16:44:05
+# command  : vlm_probe.py --n 4
+# cwd      : /home/raiyan/PR/memedecoder_2/Scripts
+# python   : 3.12.14
+#
+Console log     -> /home/raiyan/PR/memedecoder_2/Logs/vlm_probe_20260919-164405.log
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|██████████| 750/750 [00:14<00:00, 53.20it/s] 
+Model: Qwen/Qwen3-VL-8B-Instruct | VRAM 6.4 GB
+
+==============================================================================
+MEME      : testimage001.jpg | gold label: political aggression
+------------------------------------------------------------------------------
+TESSERACT : টি *Whole প্্্ ng "3 in) no Bk 1. Bye 1 | *Hasina from India* fe _ 7
+------------------------------------------------------------------------------
+VLM       : *Whole Bangladesh in turmoil*
+LIVE
+STAR SPORTS
+1HD
+*Hasina from India*
+
+MEANING: The meme humorously suggests that the entire country of Bangladesh is in chaos or turmoil simply because a woman named Hasina, who is from India, is present or performing, implying a perceived connection or reaction from Bangladesh to her presence.
+/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (4304) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+
+==============================================================================
+MEME      : testimage002.jpg | gold label: gendered aggression
+------------------------------------------------------------------------------
+TESSERACT : A man must have What do you goals, money and a house to have me offer? ১২ 3 la 9 SD ৭১ ১ YA IN ei ৮০০ 1) mmm, me কঠিন HAHAHA! L= 5 9 ৫ ৩7: ডু ২২ pa) ২:১৫
+------------------------------------------------------------------------------
+VLM       : A man must have goals, money and a house to have me
+What do you offer?
+mmm, me.
+HAHAHA!
+
+MEANING: The meme humorously portrays a woman rejecting a man's offer of herself as payment for his life goals, mocking the idea that a woman is a commodity to be bartered for material success.
+
+==============================================================================
+MEME      : testimage008.jpg | gold label: religious aggression
+------------------------------------------------------------------------------
+TESSERACT : Every single action of God, including every prophet chosen in the Qur'an, Torah, and Bible a i 4 ane F-? occured within the red circle. Seems legit.
+------------------------------------------------------------------------------
+VLM       : Every single action of God, including every prophet chosen in the Qur'an, Torah, and Bible
+occured within the red circle... Seems legit.
+
+MEANING: The meme sarcastically claims that all divine actions and chosen prophets in the Abrahamic religions occurred within a small red circle in the Middle East, implying this is a geographical coincidence and mocking the idea that religious history is confined to that region.
+
+==============================================================================
+MEME      : testimage013.jpg | gold label: non-aggressive
+------------------------------------------------------------------------------
+TESSERACT : সস্্ৃস্স্স Rl ani চে AK] যা TEJGAON / তেজগাও ৬ F armgate abl Hotel রা / w= Kanyan Bazar 00 2 an, MALIBAGF Ot; NDI Shahbag & Ramna Paik THAT SAT 3 New Market Cantra RACE/CIRCUI ছা তা তাল 131 iT
+------------------------------------------------------------------------------
+VLM       : DHAKA GRAND PRIX
+TEJGAON
+তেজগাও
+Farmgate M
+Abul Hotel
+আবুল হোটেল
+Karwan Bazar M
+MALIBAGH
+Outer
+NDI
+Green Rd
+Shahbag
+Ramna Park
+রমনা পার্ক
+a New Market
+ঢাকা নিউ মার্কেট
+Central Shaheed Minar
+RANTAGES
+VIP
+RACE CIRCUIT
+
+MEANING: The meme sarcastically claims that Dhaka’s notoriously chaotic and congested traffic, shown on a Google Maps screenshot with heavy red lines, is being humorously rebranded as a 'Grand Prix' race circuit, mocking the city’s traffic situation and likely targeting Dhaka’s commuters or authorities who ignore the problem.
+
+==============================================================================
+Judge by eye: is the VLM line readable Bengali where the Tesseract line is not?
+#
+# finished : 2026-09-19T16:44:44

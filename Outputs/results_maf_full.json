@@ -1,0 +1,92 @@
+{
+  "run_name": "maf_full",
+  "checkpoint": "maf_model_maf_full.pth",
+  "accuracy": 0.46,
+  "weighted_f1": 0.4507196699776368,
+  "macro_f1": 0.44801979158758753,
+  "weighted_precision": 0.4835614769481248,
+  "weighted_recall": 0.46,
+  "mmae": 0.9172852233676976,
+  "per_class": {
+    "NoAg": {
+      "precision": 0.31896551724137934,
+      "recall": 0.49333333333333335,
+      "f1-score": 0.387434554973822,
+      "support": 75.0
+    },
+    "GAg": {
+      "precision": 0.5777777777777777,
+      "recall": 0.26804123711340205,
+      "f1-score": 0.36619718309859156,
+      "support": 97.0
+    },
+    "PAg": {
+      "precision": 0.46296296296296297,
+      "recall": 0.390625,
+      "f1-score": 0.423728813559322,
+      "support": 128.0
+    },
+    "RAg": {
+      "precision": 0.5419847328244275,
+      "recall": 0.71,
+      "f1-score": 0.6147186147186147,
+      "support": 100.0
+    },
+    "accuracy": 0.46,
+    "macro avg": {
+      "precision": 0.47542274770163684,
+      "recall": 0.46549989261168384,
+      "f1-score": 0.44801979158758753,
+      "support": 400.0
+    },
+    "weighted avg": {
+      "precision": 0.4835614769481248,
+      "recall": 0.46,
+      "f1-score": 0.4507196699776368,
+      "support": 400.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      37,
+      8,
+      24,
+      6
+    ],
+    [
+      15,
+      26,
+      22,
+      34
+    ],
+    [
+      50,
+      8,
+      50,
+      20
+    ],
+    [
+      14,
+      3,
+      12,
+      71
+    ]
+  ],
+  "target_names": [
+    "NoAg",
+    "GAg",
+    "PAg",
+    "RAg"
+  ],
+  "hyperparameters": {
+    "max_len": 70,
+    "batch_size": 4,
+    "heads": 16,
+    "epochs": 20,
+    "lr": 5e-05,
+    "seed": 42,
+    "attn_variant": "code",
+    "fix_scheduler": false,
+    "subset": 0
+  }
+}

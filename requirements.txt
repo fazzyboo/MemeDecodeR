@@ -1,4 +1,4 @@
-# Verified working set for this project on Python 3.12 (Windows, CPU).
+# Verified working set for this replication on Python 3.12 (Windows, CPU).
 #
 # The original repository pins a Python 3.10 / 2024-era stack (torch 2.4.0,
 # transformers 4.44.2, numpy 1.26.4, pandas 2.1.4). Those pins do not resolve on
