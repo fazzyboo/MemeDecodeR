@@ -1,6 +1,9 @@
 Dataset/
+
 .cache/
+
 Saved_Models/
-Saved_Models/maf_model.pth
-Saved_Models_adapter/maf_model.pth
-Saved_Models_peft/maf_model.pth
+Saved_Models_adapter/
+Saved_Models_peft/
+
+*.pth
