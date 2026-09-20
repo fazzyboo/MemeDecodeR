@@ -1,0 +1,117 @@
+{
+  "accuracy": 0.6620879120879121,
+  "weighted_precision": 0.6650872335391157,
+  "weighted_recall": 0.6620879120879121,
+  "weighted_f1": 0.6612939928028543,
+  "macro_precision": 0.6762903023621024,
+  "macro_recall": 0.6672261130887891,
+  "macro_f1": 0.6696633153531211,
+  "micro_f1": 0.6620879120879121,
+  "mmae": 0.8118352744673167,
+  "per_class": {
+    "NoAg": {
+      "full_name": "non-aggressive",
+      "precision": 0.5529953917050692,
+      "recall": 0.6593406593406593,
+      "f1-score": 0.6015037593984962,
+      "support": 182.0
+    },
+    "GAg": {
+      "full_name": "gendered aggression",
+      "precision": 0.672,
+      "recall": 0.5833333333333334,
+      "f1-score": 0.6245353159851302,
+      "support": 144.0
+    },
+    "PAg": {
+      "full_name": "political aggression",
+      "precision": 0.819672131147541,
+      "recall": 0.78125,
+      "f1-score": 0.8,
+      "support": 128.0
+    },
+    "RAg": {
+      "full_name": "religious aggression",
+      "precision": 0.7971014492753623,
+      "recall": 0.8333333333333334,
+      "f1-score": 0.8148148148148148,
+      "support": 132.0
+    },
+    "Oth": {
+      "full_name": "others",
+      "precision": 0.5396825396825397,
+      "recall": 0.4788732394366197,
+      "f1-score": 0.5074626865671641,
+      "support": 142.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      120,
+      18,
+      7,
+      5,
+      32
+    ],
+    [
+      32,
+      84,
+      7,
+      6,
+      15
+    ],
+    [
+      10,
+      3,
+      100,
+      7,
+      8
+    ],
+    [
+      15,
+      3,
+      1,
+      110,
+      3
+    ],
+    [
+      40,
+      17,
+      7,
+      10,
+      68
+    ]
+  ],
+  "support_true": {
+    "NoAg": 182,
+    "GAg": 144,
+    "PAg": 128,
+    "RAg": 132,
+    "Oth": 142
+  },
+  "support_pred": {
+    "NoAg": 217,
+    "GAg": 125,
+    "PAg": 122,
+    "RAg": 138,
+    "Oth": 126
+  },
+  "split": "test",
+  "n_samples": 728,
+  "binary_aggression": {
+    "positive_class": "aggressive (any target)",
+    "accuracy": 0.7815934065934066,
+    "precision": 0.8786692759295499,
+    "recall": 0.8223443223443223,
+    "f1": 0.8495742667928098,
+    "macro_f1": 0.7255390130956529,
+    "n_aggressive_true": 546,
+    "n_aggressive_pred": 511
+  },
+  "majority_baseline": {
+    "always_predicts": "non-aggressive",
+    "accuracy": 0.25,
+    "macro_f1": 0.08,
+    "weighted_f1": 0.09999999999999999
+  }
+}

@@ -1,0 +1,17 @@
+2026-09-20 21:35:31 | INFO    | +     0.9s | Run directory: /home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-213530_maf_clip_clipnorm_s0
+2026-09-20 21:35:31 | INFO    | +     1.0s | Collecting environment ...
+2026-09-20 21:35:33 | INFO    | +     2.6s | Building MAF with openai/clip-vit-base-patch32 (pooled features) + sagorsarker/bangla-bert-base ...
+2026-09-20 21:35:33 | INFO    | +     3.1s | Model: 255,297,797 params (167,448,581 trainable, 87,849,216 frozen); vision_dim=512, text_dim=768
+2026-09-20 21:35:35 | INFO    | +     4.6s | Image pipeline: resize 224x224, mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711]  (the encoder's own constants)
+2026-09-20 21:35:35 | INFO    | +     4.7s | Loaders: 213/46/46 train/val/test batches
+2026-09-20 21:36:04 | INFO    | +    33.4s | epoch 1: train_loss=1.1411 train_acc=53.02% val_acc=66.71% val_macroF1=0.6760 (28.7s) *best*
+2026-09-20 21:36:31 | INFO    | +    61.2s | epoch 2: train_loss=0.6281 train_acc=76.70% val_acc=70.84% val_macroF1=0.7083 (27.8s) *best*
+2026-09-20 21:36:58 | INFO    | +    88.2s | epoch 3: train_loss=0.3962 train_acc=86.06% val_acc=68.23% val_macroF1=0.6842 (27.0s)
+2026-09-20 21:37:25 | INFO    | +   115.2s | epoch 4: train_loss=0.2368 train_acc=91.87% val_acc=68.36% val_macroF1=0.6942 (27.0s)
+2026-09-20 21:37:53 | INFO    | +   142.3s | epoch 5: train_loss=0.1458 train_acc=95.22% val_acc=69.05% val_macroF1=0.7076 (27.1s)
+2026-09-20 21:37:53 | INFO    | +   142.3s | Best epoch 2 by accuracy (val acc 70.84%, val macro F1 0.7083)
+2026-09-20 21:37:53 | INFO    | +   142.3s | Checkpoint: /home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-213530_maf_clip_clipnorm_s0/maf_siglip.pth (1021.4 MB)
+2026-09-20 21:37:53 | INFO    | +   142.6s | Reloaded best checkpoint for testing
+2026-09-20 21:37:53 | INFO    | +   142.6s | === TEST EVALUATION ===
+2026-09-20 21:37:56 | INFO    | +   145.3s | TEST acc=70.33%  weightedF1=0.6982  macroF1=0.7058  MMAE=0.729521258768618
+2026-09-20 21:37:56 | INFO    | +   145.3s | Run finished with exit code 0 (145.3s wall clock)

@@ -1,0 +1,101 @@
+{
+  "accuracy": 0.6451169188445667,
+  "weighted_precision": 0.698418670825022,
+  "weighted_recall": 0.6451169188445667,
+  "weighted_f1": 0.6454166834271349,
+  "macro_precision": 0.7181833530446469,
+  "macro_recall": 0.6384107227619517,
+  "macro_f1": 0.6539501671264843,
+  "micro_f1": 0.6451169188445667,
+  "mmae": 0.9016169856039731,
+  "per_class": {
+    "NoAg": {
+      "full_name": "non-aggressive",
+      "precision": 0.47058823529411764,
+      "recall": 0.8397790055248618,
+      "f1-score": 0.6031746031746031,
+      "support": 181.0
+    },
+    "GAg": {
+      "full_name": "gendered aggression",
+      "precision": 0.7349397590361446,
+      "recall": 0.4236111111111111,
+      "f1-score": 0.5374449339207048,
+      "support": 144.0
+    },
+    "PAg": {
+      "full_name": "political aggression",
+      "precision": 0.9489795918367347,
+      "recall": 0.7265625,
+      "f1-score": 0.8230088495575221,
+      "support": 128.0
+    },
+    "RAg": {
+      "full_name": "religious aggression",
+      "precision": 0.907563025210084,
+      "recall": 0.8120300751879699,
+      "f1-score": 0.8571428571428571,
+      "support": 133.0
+    },
+    "Oth": {
+      "full_name": "others",
+      "precision": 0.5288461538461539,
+      "recall": 0.3900709219858156,
+      "f1-score": 0.4489795918367347,
+      "support": 141.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      152,
+      7,
+      0,
+      1,
+      21
+    ],
+    [
+      68,
+      61,
+      2,
+      2,
+      11
+    ],
+    [
+      13,
+      3,
+      93,
+      7,
+      12
+    ],
+    [
+      17,
+      0,
+      3,
+      108,
+      5
+    ],
+    [
+      73,
+      12,
+      0,
+      1,
+      55
+    ]
+  ],
+  "support_true": {
+    "NoAg": 181,
+    "GAg": 144,
+    "PAg": 128,
+    "RAg": 133,
+    "Oth": 141
+  },
+  "support_pred": {
+    "NoAg": 323,
+    "GAg": 83,
+    "PAg": 98,
+    "RAg": 119,
+    "Oth": 104
+  },
+  "epoch": 5,
+  "split": "validation"
+}

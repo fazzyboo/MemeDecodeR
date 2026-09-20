@@ -1,0 +1,17 @@
+2026-09-20 17:56:36 | INFO    | +     1.8s | Run directory: /home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-175634_zs_image_vitb32
+2026-09-20 17:56:36 | INFO    | +     1.8s | Collecting environment ...
+2026-09-20 17:56:37 | INFO    | +     3.4s | Loading CLIP ViT-B/32 ...
+2026-09-20 17:56:39 | INFO    | +     5.4s | CLIP loaded in 1.9s (151,277,313 params, all frozen, 0 trainable)
+2026-09-20 17:56:39 | INFO    | +     5.5s | Built class embeddings from 25 prompts (5 per class, ensembled by mean)
+2026-09-20 17:56:40 | INFO    | +     5.6s | Inter-class prompt cosine similarity: mean 0.949, max 0.977 (closer to 1.0 means the prompts do not separate the classes)
+2026-09-20 17:56:40 | INFO    | +     5.6s | Encoding split 'test' (728 memes) ...
+2026-09-20 17:56:42 | INFO    | +     8.3s | Encoded 728 images in 2.8s
+2026-09-20 17:56:43 | INFO    | +     8.8s | Encoded 728 captions in 0.3s (77.3% truncated)
+2026-09-20 17:56:43 | INFO    | +     8.8s | Cached features -> /home/raiyan/PR/Bengali-Aggression-Memes/.clip_cache/ViT-B-32_test.npz
+2026-09-20 17:56:43 | INFO    | +     9.2s | [test/image] acc=34.89% weightedF1=0.2784 macroF1=0.2961 | majority acc=25.00% | binary-aggression F1=0.8485
+2026-09-20 17:56:44 | INFO    | +     9.9s | Encoding split 'validation' (727 memes) ...
+2026-09-20 17:56:47 | INFO    | +    12.7s | Encoded 727 images in 2.8s
+2026-09-20 17:56:47 | INFO    | +    13.1s | Encoded 727 captions in 0.3s (77.2% truncated)
+2026-09-20 17:56:47 | INFO    | +    13.1s | Cached features -> /home/raiyan/PR/Bengali-Aggression-Memes/.clip_cache/ViT-B-32_validation.npz
+2026-09-20 17:56:47 | INFO    | +    13.2s | [validation/image] acc=36.59% weightedF1=0.3031 macroF1=0.3197 | majority acc=24.90% | binary-aggression F1=0.8468
+2026-09-20 17:56:47 | INFO    | +    13.2s | Run finished with exit code 0 (13.2s wall clock)

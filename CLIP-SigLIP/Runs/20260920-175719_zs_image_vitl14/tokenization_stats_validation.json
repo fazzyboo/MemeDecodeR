@@ -1,0 +1,11 @@
+{
+  "n_captions": 727,
+  "context_length": 77,
+  "usable_token_budget": 75,
+  "bpe_tokens_mean": 127.93,
+  "bpe_tokens_median": 116.0,
+  "bpe_tokens_p90": 206.0,
+  "bpe_tokens_max": 589,
+  "fraction_truncated": 0.7717,
+  "mean_fraction_of_caption_kept": 0.6746
+}

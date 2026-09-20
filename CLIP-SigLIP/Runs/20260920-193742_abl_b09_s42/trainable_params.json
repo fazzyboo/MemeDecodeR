@@ -1,0 +1,20 @@
+{
+  "total_params": 87950913,
+  "trainable_params": 101697,
+  "frozen_params": 87849216,
+  "trainable_fraction": 0.001156,
+  "trainable_tensors": 6,
+  "trainable_names_sample": [
+    "visual.transformer.resblocks.9.adapter.down_proj.weight",
+    "visual.transformer.resblocks.9.adapter.down_proj.bias",
+    "visual.transformer.resblocks.9.adapter.up_proj.weight",
+    "visual.transformer.resblocks.9.adapter.up_proj.bias",
+    "head.weight",
+    "head.logit_scale"
+  ],
+  "groups": {
+    "adapters": 99136,
+    "head": 2561
+  },
+  "feature_dim": 512
+}

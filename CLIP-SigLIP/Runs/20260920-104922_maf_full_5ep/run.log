@@ -1,0 +1,25 @@
+2026-09-20 10:49:22 | INFO    | +     0.0s | Run directory: /home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-104922_maf_full_5ep
+2026-09-20 10:49:24 | INFO    | +     1.3s | Seeded python/numpy/torch with 42
+2026-09-20 10:49:24 | INFO    | +     1.3s | Collecting environment ...
+2026-09-20 10:49:25 | INFO    | +     3.0s | Importing pipeline modules (loads CLIP ViT-B/32 onto the device) ...
+2026-09-20 10:49:29 | INFO    | +     6.3s | Modules imported in 3.4s
+2026-09-20 10:49:29 | INFO    | +     6.3s | Instrumentation hooks installed (dataset.load_dataset, models.MAF, models.calculate_accuracy, models.accuracy_score, models.train, models.evaluation, evaluation.pipline)
+2026-09-20 10:49:29 | INFO    | +     6.3s | Calling main.main with {'dataset_path': 'Dataset', 'maximum_length': 70, 'batch': 16, 'model_path': '/home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-104922_maf_full_5ep/checkpoints', 'n_heads': 16, 'epochs': 5, 'lr_rate': 5e-05}
+2026-09-20 10:49:29 | INFO    | +     6.3s | Building data loaders (max_len=70, batch_size=16)
+2026-09-20 10:49:33 | INFO    | +    10.1s | Loaders ready in 3.7s (213/46/182 train/val/test batches)
+2026-09-20 10:49:33 | INFO    | +    10.1s | === TRAINING START ===
+2026-09-20 10:49:33 | INFO    | +    10.7s | MAF built: 255,297,797 params (167,448,581 trainable, 87,849,216 frozen)
+2026-09-20 10:49:33 | INFO    | +    10.9s | Optimizer AdamW lr=5e-05 weight_decay=0.01; scheduler num_training_steps=1065
+2026-09-20 10:50:35 | INFO    | +    72.7s | epoch 1: train_loss=1.0855 train_acc=56.48% val_acc=65.61% val_macroF1=0.6390 (62.6s) *best*
+2026-09-20 10:51:38 | INFO    | +   135.2s | epoch 2: train_loss=0.5855 train_acc=78.81% val_acc=68.23% val_macroF1=0.6864 (62.5s) *best*
+2026-09-20 10:52:41 | INFO    | +   198.8s | epoch 3: train_loss=0.3307 train_acc=89.00% val_acc=67.13% val_macroF1=0.6683 (63.5s)
+2026-09-20 10:53:47 | INFO    | +   264.3s | epoch 4: train_loss=0.1850 train_acc=93.84% val_acc=68.23% val_macroF1=0.6873 (65.5s)
+2026-09-20 10:54:51 | INFO    | +   328.2s | epoch 5: train_loss=0.1219 train_acc=96.33% val_acc=64.51% val_macroF1=0.6540 (63.9s)
+2026-09-20 10:54:51 | INFO    | +   328.2s | === TRAINING END (318.1s) ===
+2026-09-20 10:54:51 | INFO    | +   328.2s | === TEST EVALUATION START ===
+2026-09-20 10:55:00 | INFO    | +   337.7s | Checkpoint used: /home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-104922_maf_full_5ep/checkpoints/maf_model.pth (1021.3 MB)
+2026-09-20 10:55:00 | INFO    | +   337.7s | === TEST EVALUATION END (9.5s) ===
+2026-09-20 10:55:00 | INFO    | +   337.8s | Wrote test_predictions.csv (728 rows)
+2026-09-20 10:55:00 | INFO    | +   337.8s | TEST  acc=67.17%  weightedF1=0.6673  macroF1=0.6756  MMAE=0.8476666525962301
+2026-09-20 10:55:00 | INFO    | +   337.8s | Pipeline finished in 331.5s
+2026-09-20 10:55:00 | INFO    | +   337.8s | Run finished with exit code 0 (337.8s wall clock)

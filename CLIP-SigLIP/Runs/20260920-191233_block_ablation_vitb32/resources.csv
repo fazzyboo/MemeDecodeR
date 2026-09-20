@@ -1,0 +1,1 @@
+elapsed_s,cpu_percent,rss_mb,gpu_util_percent,gpu_mem_used_mb,gpu_temp_c,torch_alloc_mb,torch_reserved_mb

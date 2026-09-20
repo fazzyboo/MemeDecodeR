@@ -1,0 +1,30 @@
+MAF on MIMOSA -- test-set classification report
+run: 20260920-104922_maf_full_5ep
+samples: 728
+
+              precision    recall  f1-score   support
+
+        NoAg      0.495     0.852     0.626       182
+         GAg      0.723     0.562     0.633       144
+         PAg      0.852     0.766     0.807       128
+         RAg      0.956     0.826     0.886       132
+         Oth      0.622     0.324     0.426       142
+
+    accuracy                          0.672       728
+   macro avg      0.730     0.666     0.676       728
+weighted avg      0.711     0.672     0.667       728
+
+
+Accuracy           : 0.6717
+Weighted Precision : 0.7113
+Weighted Recall    : 0.6717
+Weighted F1        : 0.6673
+Macro F1           : 0.6756
+MMAE               : 0.8476666525962301
+
+Confusion matrix (rows = true, cols = predicted, order NoAg, GAg, PAg, RAg, Oth):
+  NoAg     155     12      4      2      9
+  GAg       53     81      1      0      9
+  PAg       16      3     98      1     10
+  RAg       17      2      4    109      0
+  Oth       72     14      8      2     46

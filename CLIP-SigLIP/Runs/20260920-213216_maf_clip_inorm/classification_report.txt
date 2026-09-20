@@ -1,0 +1,33 @@
+MAF + SigLIP on MIMOSA -- test set
+run: 20260920-213216_maf_clip_inorm
+vision: openai/clip-vit-base-patch32 (pooled)   text: sagorsarker/bangla-bert-base
+normalisation: ImageNet (dataset.py)
+trainable: 167,448,581 of 255,297,797
+samples: 728
+
+              precision    recall  f1-score   support
+
+        NoAg      0.658     0.665     0.661       182
+         GAg      0.744     0.688     0.715       144
+         PAg      0.797     0.828     0.812       128
+         RAg      0.888     0.841     0.864       132
+         Oth      0.582     0.627     0.603       142
+
+    accuracy                          0.723       728
+   macro avg      0.734     0.730     0.731       728
+weighted avg      0.726     0.723     0.724       728
+
+
+Accuracy           : 0.7225
+Weighted Precision : 0.7262
+Weighted Recall    : 0.7225
+Weighted F1        : 0.7238
+Macro F1           : 0.7311
+MMAE               : 0.649089503512919
+
+Confusion matrix (rows = true, cols = predicted, order NoAg, GAg, PAg, RAg, Oth):
+  NoAg     121     20     10      3     28
+  GAg       21     99      4      4     16
+  PAg        6      1    106      2     13
+  RAg        6      5      3    111      7
+  Oth       30      8     10      5     89

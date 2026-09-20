@@ -1,0 +1,33 @@
+CLIP + AdaptFormer (PEFT) on MIMOSA -- test set
+run: 20260920-193014_abl_b06_s42
+backbone: ViT-B/32   head: zeroshot   r=64   s=0.1
+trainable: 101,697 of 87,950,913 (0.116%)
+samples: 728
+
+              precision    recall  f1-score   support
+
+        NoAg      0.523     0.615     0.566       182
+         GAg      0.601     0.618     0.610       144
+         PAg      0.815     0.789     0.802       128
+         RAg      0.795     0.765     0.780       132
+         Oth      0.557     0.451     0.498       142
+
+    accuracy                          0.641       728
+   macro avg      0.658     0.648     0.651       728
+weighted avg      0.646     0.641     0.641       728
+
+
+Accuracy           : 0.6415
+Weighted F1        : 0.6415
+Macro F1           : 0.6510
+MMAE               : 0.841047325620389
+
+Aggressive vs non-aggressive (collapsed to binary)
+  accuracy 0.7637  precision 0.8638  recall 0.8132  F1 0.8377
+
+Confusion matrix (rows = true, cols = predicted, order NoAg, GAg, PAg, RAg, Oth):
+  NoAg     112     29     10      4     27
+  GAg       31     89      4      5     15
+  PAg       10      5    101      6      6
+  RAg       20      6      2    101      3
+  Oth       41     19      7     11     64

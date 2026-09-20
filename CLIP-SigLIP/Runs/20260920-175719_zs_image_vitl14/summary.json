@@ -1,0 +1,303 @@
+{
+  "run_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-175719_zs_image_vitl14",
+  "config": {
+    "approach": "CLIP zero-shot (no training, no BanglaBERT, no checkpoint)",
+    "backbone": "ViT-L/14",
+    "splits": [
+      "test",
+      "validation"
+    ],
+    "mode": "image",
+    "alpha": 0.5,
+    "alpha_sweep": false,
+    "prompt_file": null,
+    "dataset_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Dataset",
+    "batch_size": 64,
+    "max_samples": 0,
+    "seed": 42,
+    "device": "cuda:0",
+    "run_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-175719_zs_image_vitl14",
+    "command": "/home/raiyan/anaconda3/envs/memedecoder/bin/python clip_zeroshot.py --backbone ViT-L/14 --mode image --split test validation --run_name zs_image_vitl14",
+    "alpha_used": 0.5
+  },
+  "prompts": {
+    "non-aggressive": [
+      "a harmless funny internet meme",
+      "a wholesome joke meme with no insult",
+      "a neutral photo with caption text",
+      "a friendly lighthearted meme",
+      "a meme that does not attack anyone"
+    ],
+    "gendered aggression": [
+      "a sexist meme insulting a woman",
+      "a misogynistic meme attacking women",
+      "a meme mocking a woman's appearance or body",
+      "a meme attacking someone for their gender",
+      "a meme objectifying a woman"
+    ],
+    "political aggression": [
+      "a meme attacking a politician",
+      "a political meme insulting a political party",
+      "a meme mocking a government leader",
+      "an angry political protest meme",
+      "a meme criticising a prime minister or minister"
+    ],
+    "religious aggression": [
+      "a meme attacking a religion",
+      "a meme insulting religious people",
+      "a meme mocking a religious figure or symbol",
+      "a communal hate meme about religion",
+      "a meme showing a mosque temple or religious clothing with hostile text"
+    ],
+    "others": [
+      "an aggressive meme insulting a person",
+      "an offensive meme with abusive text",
+      "a meme attacking someone personally",
+      "an angry insulting meme with harsh words",
+      "a rude meme bullying an individual"
+    ]
+  },
+  "results": {
+    "test": {
+      "accuracy": 0.4217032967032967,
+      "weighted_precision": 0.43166784908453837,
+      "weighted_recall": 0.4217032967032967,
+      "weighted_f1": 0.3571306956621791,
+      "macro_precision": 0.4327295720884699,
+      "macro_recall": 0.45380406956111174,
+      "macro_f1": 0.3780698325227386,
+      "micro_f1": 0.4217032967032967,
+      "mmae": 1.0789496765949231,
+      "confusion_matrix": [
+        [
+          6,
+          20,
+          57,
+          88,
+          11
+        ],
+        [
+          1,
+          86,
+          14,
+          34,
+          9
+        ],
+        [
+          0,
+          6,
+          92,
+          21,
+          9
+        ],
+        [
+          2,
+          2,
+          25,
+          101,
+          2
+        ],
+        [
+          7,
+          25,
+          32,
+          56,
+          22
+        ]
+      ],
+      "support_true": {
+        "NoAg": 182,
+        "GAg": 144,
+        "PAg": 128,
+        "RAg": 132,
+        "Oth": 142
+      },
+      "support_pred": {
+        "NoAg": 16,
+        "GAg": 139,
+        "PAg": 220,
+        "RAg": 300,
+        "Oth": 53
+      },
+      "split": "test",
+      "mode": "image",
+      "alpha": null,
+      "n_samples": 728,
+      "binary_aggression": {
+        "positive_class": "aggressive (any target)",
+        "accuracy": 0.7445054945054945,
+        "precision": 0.7528089887640449,
+        "recall": 0.9816849816849816,
+        "f1": 0.8521462639109698,
+        "macro_f1": 0.4563761622585152,
+        "n_aggressive_true": 546,
+        "n_aggressive_pred": 712
+      },
+      "majority_baseline": {
+        "always_predicts": "non-aggressive",
+        "accuracy": 0.25,
+        "macro_f1": 0.08,
+        "weighted_f1": 0.09999999999999999
+      }
+    },
+    "validation": {
+      "accuracy": 0.4305364511691884,
+      "weighted_precision": 0.48897470864612813,
+      "weighted_recall": 0.4305364511691884,
+      "weighted_f1": 0.37073229592720996,
+      "macro_precision": 0.48629327521542987,
+      "macro_recall": 0.46053790647640025,
+      "macro_f1": 0.38966766642942485,
+      "micro_f1": 0.4305364511691884,
+      "mmae": 1.0562298535917494,
+      "confusion_matrix": [
+        [
+          9,
+          17,
+          50,
+          95,
+          10
+        ],
+        [
+          1,
+          90,
+          13,
+          38,
+          2
+        ],
+        [
+          0,
+          5,
+          95,
+          26,
+          2
+        ],
+        [
+          4,
+          3,
+          26,
+          98,
+          2
+        ],
+        [
+          5,
+          26,
+          32,
+          57,
+          21
+        ]
+      ],
+      "support_true": {
+        "NoAg": 181,
+        "GAg": 144,
+        "PAg": 128,
+        "RAg": 133,
+        "Oth": 141
+      },
+      "support_pred": {
+        "NoAg": 19,
+        "GAg": 141,
+        "PAg": 216,
+        "RAg": 314,
+        "Oth": 37
+      },
+      "split": "validation",
+      "mode": "image",
+      "alpha": null,
+      "n_samples": 727,
+      "binary_aggression": {
+        "positive_class": "aggressive (any target)",
+        "accuracy": 0.749656121045392,
+        "precision": 0.7570621468926554,
+        "recall": 0.9816849816849816,
+        "f1": 0.8548644338118022,
+        "macro_f1": 0.4724322169059011,
+        "n_aggressive_true": 546,
+        "n_aggressive_pred": 708
+      },
+      "majority_baseline": {
+        "always_predicts": "non-aggressive",
+        "accuracy": 0.24896836313617607,
+        "macro_f1": 0.07973568281938326,
+        "weighted_f1": 0.09925831217543583
+      }
+    }
+  },
+  "per_class": {
+    "test": {
+      "NoAg": {
+        "full_name": "non-aggressive",
+        "precision": 0.375,
+        "recall": 0.03296703296703297,
+        "f1-score": 0.06060606060606061,
+        "support": 182.0
+      },
+      "GAg": {
+        "full_name": "gendered aggression",
+        "precision": 0.6187050359712231,
+        "recall": 0.5972222222222222,
+        "f1-score": 0.607773851590106,
+        "support": 144.0
+      },
+      "PAg": {
+        "full_name": "political aggression",
+        "precision": 0.41818181818181815,
+        "recall": 0.71875,
+        "f1-score": 0.5287356321839081,
+        "support": 128.0
+      },
+      "RAg": {
+        "full_name": "religious aggression",
+        "precision": 0.33666666666666667,
+        "recall": 0.7651515151515151,
+        "f1-score": 0.4675925925925926,
+        "support": 132.0
+      },
+      "Oth": {
+        "full_name": "others",
+        "precision": 0.41509433962264153,
+        "recall": 0.15492957746478872,
+        "f1-score": 0.22564102564102564,
+        "support": 142.0
+      }
+    },
+    "validation": {
+      "NoAg": {
+        "full_name": "non-aggressive",
+        "precision": 0.47368421052631576,
+        "recall": 0.049723756906077346,
+        "f1-score": 0.09,
+        "support": 181.0
+      },
+      "GAg": {
+        "full_name": "gendered aggression",
+        "precision": 0.6382978723404256,
+        "recall": 0.625,
+        "f1-score": 0.631578947368421,
+        "support": 144.0
+      },
+      "PAg": {
+        "full_name": "political aggression",
+        "precision": 0.4398148148148148,
+        "recall": 0.7421875,
+        "f1-score": 0.5523255813953488,
+        "support": 128.0
+      },
+      "RAg": {
+        "full_name": "religious aggression",
+        "precision": 0.31210191082802546,
+        "recall": 0.7368421052631579,
+        "f1-score": 0.43847874720357943,
+        "support": 133.0
+      },
+      "Oth": {
+        "full_name": "others",
+        "precision": 0.5675675675675675,
+        "recall": 0.14893617021276595,
+        "f1-score": 0.23595505617977527,
+        "support": 141.0
+      }
+    }
+  },
+  "timings_s": {}
+}

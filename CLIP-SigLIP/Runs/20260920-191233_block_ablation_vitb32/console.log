@@ -1,0 +1,30 @@
+
+AdaptFormer per-block ablation -- one block adapted at a time
+backbone ViT-B/32 | r=64 | 10 epochs | seeds 42 | head zeroshot
+
+block          trainable   macro F1     +/-      acc  weighted F1
+-----------------------------------------------------------------
+0                101,697     0.6281  0.0000   0.6223       0.6196
+1                101,697     0.6444  0.0000   0.6374       0.6364
+2                101,697     0.6451  0.0000   0.6401       0.6381
+3                101,697     0.6552  0.0000   0.6484       0.6477
+4                101,697     0.6464  0.0000   0.6387       0.6381
+5                101,697     0.6579  0.0000   0.6497       0.6497
+6                101,697     0.6510  0.0000   0.6415       0.6415
+7                101,697     0.6655  0.0000   0.6552       0.6568
+8                101,697     0.6697  0.0000   0.6621       0.6613
+9                101,697     0.6614  0.0000   0.6525       0.6526
+10               101,697     0.6445  0.0000   0.6374       0.6348
+11               101,697     0.6326  0.0000   0.6250       0.6248
+-----------------------------------------------------------------
+head only          2,561     0.6454  0.0000   0.6346       0.6365
+all blocks     1,192,193     0.6531  0.0000   0.6442       0.6452
+
+Findings
+  best single block : 8 (macro F1 0.6697)
+  worst single block: 0 (macro F1 0.6281)
+  spread across blocks: 0.0416 macro F1
+  best single block over head-only floor: +0.0243
+  block 8 alone BEATS all-blocks (0.6697 vs 0.6531) using 1/12 of the adapter budget -- adapting every block is over-parameterised for this dataset
+  single seed per block: gaps of a point or two are NOT separable from run-to-run noise. Re-run with --seeds 0,1,2.
+

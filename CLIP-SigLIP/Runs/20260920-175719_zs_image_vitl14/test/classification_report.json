@@ -1,0 +1,130 @@
+{
+  "accuracy": 0.4217032967032967,
+  "weighted_precision": 0.43166784908453837,
+  "weighted_recall": 0.4217032967032967,
+  "weighted_f1": 0.3571306956621791,
+  "macro_precision": 0.4327295720884699,
+  "macro_recall": 0.45380406956111174,
+  "macro_f1": 0.3780698325227386,
+  "micro_f1": 0.4217032967032967,
+  "mmae": 1.0789496765949231,
+  "per_class": {
+    "NoAg": {
+      "full_name": "non-aggressive",
+      "precision": 0.375,
+      "recall": 0.03296703296703297,
+      "f1-score": 0.06060606060606061,
+      "support": 182.0
+    },
+    "GAg": {
+      "full_name": "gendered aggression",
+      "precision": 0.6187050359712231,
+      "recall": 0.5972222222222222,
+      "f1-score": 0.607773851590106,
+      "support": 144.0
+    },
+    "PAg": {
+      "full_name": "political aggression",
+      "precision": 0.41818181818181815,
+      "recall": 0.71875,
+      "f1-score": 0.5287356321839081,
+      "support": 128.0
+    },
+    "RAg": {
+      "full_name": "religious aggression",
+      "precision": 0.33666666666666667,
+      "recall": 0.7651515151515151,
+      "f1-score": 0.4675925925925926,
+      "support": 132.0
+    },
+    "Oth": {
+      "full_name": "others",
+      "precision": 0.41509433962264153,
+      "recall": 0.15492957746478872,
+      "f1-score": 0.22564102564102564,
+      "support": 142.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      6,
+      20,
+      57,
+      88,
+      11
+    ],
+    [
+      1,
+      86,
+      14,
+      34,
+      9
+    ],
+    [
+      0,
+      6,
+      92,
+      21,
+      9
+    ],
+    [
+      2,
+      2,
+      25,
+      101,
+      2
+    ],
+    [
+      7,
+      25,
+      32,
+      56,
+      22
+    ]
+  ],
+  "support_true": {
+    "NoAg": 182,
+    "GAg": 144,
+    "PAg": 128,
+    "RAg": 132,
+    "Oth": 142
+  },
+  "support_pred": {
+    "NoAg": 16,
+    "GAg": 139,
+    "PAg": 220,
+    "RAg": 300,
+    "Oth": 53
+  },
+  "split": "test",
+  "mode": "image",
+  "alpha": null,
+  "n_samples": 728,
+  "binary_aggression": {
+    "positive_class": "aggressive (any target)",
+    "accuracy": 0.7445054945054945,
+    "precision": 0.7528089887640449,
+    "recall": 0.9816849816849816,
+    "f1": 0.8521462639109698,
+    "macro_f1": 0.4563761622585152,
+    "n_aggressive_true": 546,
+    "n_aggressive_pred": 712
+  },
+  "majority_baseline": {
+    "always_predicts": "non-aggressive",
+    "accuracy": 0.25,
+    "macro_f1": 0.08,
+    "weighted_f1": 0.09999999999999999
+  },
+  "tokenization": {
+    "n_captions": 728,
+    "context_length": 77,
+    "usable_token_budget": 75,
+    "bpe_tokens_mean": 135.17,
+    "bpe_tokens_median": 124.0,
+    "bpe_tokens_p90": 226.0,
+    "bpe_tokens_max": 973,
+    "fraction_truncated": 0.7734,
+    "mean_fraction_of_caption_kept": 0.6546
+  }
+}

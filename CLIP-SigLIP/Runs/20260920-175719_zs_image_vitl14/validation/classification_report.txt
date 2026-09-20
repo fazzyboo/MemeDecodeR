@@ -1,0 +1,35 @@
+CLIP zero-shot on MIMOSA -- validation split
+mode: image
+samples: 727
+
+              precision    recall  f1-score   support
+
+        NoAg      0.474     0.050     0.090       181
+         GAg      0.638     0.625     0.632       144
+         PAg      0.440     0.742     0.552       128
+         RAg      0.312     0.737     0.438       133
+         Oth      0.568     0.149     0.236       141
+
+    accuracy                          0.431       727
+   macro avg      0.486     0.461     0.390       727
+weighted avg      0.489     0.431     0.371       727
+
+
+Accuracy           : 0.4305
+Weighted F1        : 0.3707
+Macro F1           : 0.3897
+MMAE               : 1.0562298535917494
+
+Reference points
+  majority baseline (always 'non-aggressive'): acc 0.2490, macro F1 0.0797
+  random 5-way guess                          : acc 0.2000
+
+Aggressive vs non-aggressive (5-way collapsed to binary)
+  accuracy 0.7497  precision 0.7571  recall 0.9817  F1 0.8549
+
+Confusion matrix (rows = true, cols = predicted, order NoAg, GAg, PAg, RAg, Oth):
+  NoAg       9     17     50     95     10
+  GAg        1     90     13     38      2
+  PAg        0      5     95     26      2
+  RAg        4      3     26     98      2
+  Oth        5     26     32     57     21

@@ -1,0 +1,21 @@
+{
+  "backbone": "ViT-B/32",
+  "total_blocks": 12,
+  "blocks_tested": [
+    0,
+    8
+  ],
+  "seeds": [
+    0,
+    1
+  ],
+  "baselines": true,
+  "bottleneck": 64,
+  "epochs": 10,
+  "batch_size": 64,
+  "lr": 0.001,
+  "head": "zeroshot",
+  "n_child_runs": 8,
+  "sweep_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-194805_block_ablation_seeds",
+  "command": "/home/raiyan/anaconda3/envs/memedecoder/bin/python block_ablation.py --blocks 0,8 --seeds 0,1 --epochs 10 --sweep_name block_ablation_seeds --prefix ablseed"
+}
