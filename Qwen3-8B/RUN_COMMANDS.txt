@@ -1,0 +1,594 @@
+================================================================================
+ MAF REPLICATION - STANDALONE RUN INSTRUCTIONS
+ Machine: this Linux box, NVIDIA GeForce RTX 5060 Ti (16 GB, Blackwell / sm_120)
+ Written: 2026-09-19
+================================================================================
+
+Everything below is copy-pasteable start to finish. It assumes nothing except that
+anaconda3 is installed at /home/raiyan/anaconda3 and this folder is intact.
+
+The project root is:
+    /home/raiyan/PR/memedecoder_2
+
+README.md explains the science (what MAF is, how the replication differs from the
+paper). THIS file is only the operational side: which commands to run, in what
+order, what each one should print, and what to do when one of them fails.
+
+
+================================================================================
+ 0. THE THREE COMMANDS YOU ACTUALLY NEED
+================================================================================
+
+If the environment already exists and you just want to reproduce the headline
+result, this is the whole job:
+
+    source /home/raiyan/anaconda3/etc/profile.d/conda.sh
+    conda activate memedecoder
+    cd /home/raiyan/PR/memedecoder_2/Scripts && python main.py --run_name maf_full
+
+That takes about 21 minutes on the 5060 Ti and writes its results to Outputs/,
+its checkpoint to Saved_Models/ and its full console log to Logs/.
+
+Everything else in this file is setup, verification, variants and troubleshooting.
+
+
+================================================================================
+ 1. ENVIRONMENT - BUILDING IT FROM SCRATCH
+================================================================================
+
+Only needed if the `memedecoder` env is gone. Check first:
+
+    conda env list | grep memedecoder
+
+If it is listed, skip to section 2.
+
+--------------------------------------------------------------------------------
+ 1a. Create the environment
+--------------------------------------------------------------------------------
+
+    source /home/raiyan/anaconda3/etc/profile.d/conda.sh
+    conda create -n memedecoder python=3.12 -y
+    conda activate memedecoder
+
+--------------------------------------------------------------------------------
+ 1b. Install PyTorch  <-- THE ONE STEP THAT IS EASY TO GET WRONG
+--------------------------------------------------------------------------------
+
+    pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+
+The --index-url is NOT optional on this machine. The RTX 5060 Ti is a Blackwell
+card reporting compute capability 12.0 (sm_120). Stock PyPI `pip install torch`
+wheels are built for older architectures and will either refuse the GPU or fail at
+the first kernel launch with "no kernel image is available for execution on the
+device". The cu128 wheels are the ones that carry sm_120.
+
+Note this differs from README.md section 3, which gives the CPU index-url. That
+instruction was written for the original Windows machine, which had no GPU.
+
+--------------------------------------------------------------------------------
+ 1c. Install everything else
+--------------------------------------------------------------------------------
+
+    cd /home/raiyan/PR/memedecoder_2
+    pip install -r requirements.txt
+
+All pins in requirements.txt resolve as written on Python 3.12. This also builds
+OpenAI CLIP from GitHub, so the machine needs network access and a `git` binary.
+
+Then the three packages the VLM scripts need on top of that (section 7):
+
+    pip install accelerate peft bitsandbytes
+
+ONE ENVIRONMENT. Both the MAF model and the VLM work run in `memedecoder`. There is
+deliberately no second environment for the VLM stack. The three packages above are
+purely additive - they do not move torch or transformers - but after installing
+anything new, re-run _check_env.py (next step) to confirm the MAF stack is untouched.
+
+--------------------------------------------------------------------------------
+ 1d. Verify the stack
+--------------------------------------------------------------------------------
+
+    cd /home/raiyan/PR/memedecoder_2/Scripts
+    python _check_env.py
+
+Expected - the important part is "cuda: True":
+
+    torch        2.11.0+cu128 | cuda: True
+    transformers 5.17.0
+    get_linear_schedule_with_warmup: OK
+    clip import : OK ['RN50', 'RN101', 'RN50x4']
+    imblearn MMAE: OK
+    pandas       3.0.5
+    sklearn      1.9.1
+    HF_HOME      /home/raiyan/PR/memedecoder_2/.cache/huggingface
+
+If it says "cuda: False", go back to step 1b - you have CPU wheels installed.
+
+Confirm the GPU really computes, not just that it is detected:
+
+    python -c "import torch; print(torch.cuda.get_device_name(0), torch.cuda.get_device_capability(0)); x=torch.randn(2000,2000,device='cuda'); print('matmul ok:', float((x@x).sum())!=0)"
+
+Expected:
+
+    NVIDIA GeForce RTX 5060 Ti (12, 0)
+    matmul ok: True
+
+
+================================================================================
+ 2. DATA - ALREADY BUILT, DO NOT REDO
+================================================================================
+
+Stages 1 and 2 (OCR and splits) have already been run and their outputs are in
+the repo. Do not re-run them unless you deliberately want to rebuild the data.
+
+Verify they are present:
+
+    cd /home/raiyan/PR/memedecoder_2
+    wc -l Dataset/*.csv
+    ls Dataset/Img | wc -l
+
+Expected:
+
+       3304 Dataset/captions_clean.csv      (3303 memes + header)
+       3304 Dataset/captions_raw.csv
+        401 Dataset/testing_set.csv         (400 test memes)
+       2391 Dataset/training_set.csv        (2390 train memes)
+        514 Dataset/validation_set.csv      (513 validation memes)
+       3303                                 (images)
+
+If these are all there, you never need Tesseract. pytesseract is only used by
+Stage 1 (ocr_captions.py), and Stage 1 is done. Re-running OCR on Linux would
+additionally require installing the Tesseract binary plus Bengali language data,
+which README.md section 3 documents only in its Windows form.
+
+
+================================================================================
+ 3. RUNNING THE MODEL
+================================================================================
+
+Always activate the env first:
+
+    source /home/raiyan/anaconda3/etc/profile.d/conda.sh
+    conda activate memedecoder
+    cd /home/raiyan/PR/memedecoder_2/Scripts
+
+--------------------------------------------------------------------------------
+ 3a. Smoke test - 2 minutes, run this before any long run
+--------------------------------------------------------------------------------
+
+    python main.py --subset 24 --n_iter 1 --run_name smoketest
+
+This exercises the entire path: load -> train -> validate -> checkpoint -> reload
+-> test -> metrics -> write Outputs/. It should finish at about 20.8% accuracy.
+
+THAT NUMBER IS NOT A RESULT. It is 24 training memes for one epoch against a 25%
+four-class chance baseline. It proves the plumbing works and nothing else.
+
+First ever run also downloads Bangla-BERT (~650 MB) and CLIP ViT-B/32 (~350 MB)
+into .cache/, so allow extra time and network for that one.
+
+--------------------------------------------------------------------------------
+ 3b. The real run - about 21 minutes on the 5060 Ti
+--------------------------------------------------------------------------------
+
+    python main.py --run_name maf_full
+
+Defaults are the paper's Appendix A setup: batch 4, 20 epochs, lr 5e-5, 16 heads,
+max_len 70, seed 42. You do not need to pass any of them.
+
+Ignore README.md section 5.7, which says this machine has no CUDA GPU and that
+full training is a multi-day job best sent to Colab or Kaggle. That was true of
+the original Windows machine. Here it is a 21-minute local run.
+
+To run it detached so it survives the terminal closing:
+
+    nohup python main.py --run_name maf_full > /dev/null 2>&1 &
+
+The console log still lands in Logs/ either way (see section 4), so sending stdout
+to /dev/null loses nothing.
+
+--------------------------------------------------------------------------------
+ 3c. Watching a run in progress
+--------------------------------------------------------------------------------
+
+Follow the live log, collapsing the tqdm progress bars to just the epoch lines:
+
+    tail -f /home/raiyan/PR/memedecoder_2/Logs/maf_full_*.log | grep --line-buffered "Epoch"
+
+Check the GPU is actually busy:
+
+    nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv,noheader
+
+--------------------------------------------------------------------------------
+ 3d. Variants worth running - each also about 21 minutes
+--------------------------------------------------------------------------------
+
+Use a distinct --run_name every time. Outputs and checkpoints are keyed by it, so
+reusing a name silently overwrites the previous run.
+
+    # The attention order the paper's TEXT describes, vs the released code
+    # (README section 5.4 - the two disagree, and the default follows the code)
+    python main.py --run_name maf_paper_attn --attn_variant paper
+
+    # With the LR scheduler bug corrected (README section 5.5 - the original steps
+    # it once per epoch instead of once per batch, so the LR barely decays)
+    python main.py --run_name maf_fixed_sched --fix_scheduler
+
+    # Trained on strict raw OCR instead of denoised captions. This one needs the
+    # splits rebuilt first, so it is two commands - and note it OVERWRITES the
+    # three split CSVs, so rebuild them afterwards if you want the clean ones back.
+    python prepare_dataset.py --stats --captions ../Dataset/captions_raw.csv
+    python main.py --run_name maf_raw_captions
+    python prepare_dataset.py --stats          # restore the clean-caption splits
+
+
+================================================================================
+ 4. CONSOLE LOGS  (added 2026-09-19)
+================================================================================
+
+Every main.py run now tees its complete console output to:
+
+    /home/raiyan/PR/memedecoder_2/Logs/<run_name>_<timestamp>.log
+
+This exists because the per-epoch training curve was previously printed to the
+terminal and nowhere else. results_<run>.json keeps the final test metrics but not
+the epoch-by-epoch validation accuracy, so closing the terminal destroyed the only
+evidence of whether a run over-fitted and at which epoch the checkpoint was taken.
+
+The terminal behaves exactly as before - tqdm still draws live progress bars. In
+the file, each progress bar is collapsed to a single line showing its final state,
+so a 20-epoch run produces a readable log rather than tens of thousands of partial
+redraws. Each log carries a header (timestamp, exact command, cwd, Python version)
+and a footer with the finish time.
+
+To disable for a given run:
+
+    python main.py --run_name whatever --no_log
+
+Logs are never cleaned up automatically. They are a few KB each. Delete them with:
+
+    rm /home/raiyan/PR/memedecoder_2/Logs/*.log
+
+Implementation is Scripts/_logging.py. To add the same capture to another script,
+the whole change is two lines after its arguments are parsed:
+
+    import _logging
+    _logging.start("some_name")
+
+
+================================================================================
+ 5. READING THE RESULTS
+================================================================================
+
+Each run writes three things:
+
+    Outputs/results_<run>.json        metrics, per-class report, confusion matrix,
+                                      and the exact hyperparameters used
+    Outputs/predictions_<run>.csv     per-meme predictions, all 400 test images
+    Saved_Models/maf_model_<run>.pth  best-validation checkpoint (~1 GB EACH)
+    Logs/<run>_<timestamp>.log        full console output
+
+Pretty-print the headline metrics of a run:
+
+    python -c "import json;d=json.load(open('/home/raiyan/PR/memedecoder_2/Outputs/results_maf_full.json'));print({k:d[k] for k in ['accuracy','weighted_f1','macro_f1','mmae']})"
+
+Compare every run you have done side by side:
+
+    cd /home/raiyan/PR/memedecoder_2/Outputs
+    for f in results_*.json; do python -c "
+import json,sys;d=json.load(open('$f'))
+print('%-22s acc=%.3f  wf1=%.3f  mf1=%.3f  mmae=%.3f' % (d['run_name'],d['accuracy'],d['weighted_f1'],d['macro_f1'],d['mmae']))"; done
+
+WATCH YOUR DISK. Every run leaves a ~1 GB checkpoint. Five runs is 5 GB. List and
+prune them with:
+
+    du -sh /home/raiyan/PR/memedecoder_2/Saved_Models/*
+    rm /home/raiyan/PR/memedecoder_2/Saved_Models/maf_model_smoketest.pth
+
+--------------------------------------------------------------------------------
+ Reference results - runs of 2026-09-19
+--------------------------------------------------------------------------------
+
+Held-out test set (400 memes):
+
+    run                accuracy   weighted F1   macro F1    MMAE (lower better)
+    maf_full             0.460       0.451        0.448        0.917
+    vlm_zeroshot         0.720       0.716        0.706        0.419
+    vlm_finetuned        0.680       0.682        0.674        0.492
+    (published paper)      -         0.742          -            -
+
+The zero-shot VLM beats the trained MAF model by 26 points of accuracy WITHOUT having
+been trained on this dataset at all - and it also beats the fine-tuned VLM. That last
+part is counter-intuitive and is explained in section 7f. Do not "fix" it by training
+longer; it is not an under-training problem.
+
+
+    Accuracy      0.460
+    Weighted F1   0.451
+    Macro F1      0.448
+    MMAE          0.917
+    Best val acc  0.733  (reached at epoch 9 of 20)
+    Wall time     1253s
+
+Per class, F1: RAg 0.615, PAg 0.424, NoAg 0.387, GAg 0.366.
+
+Two things to understand before you compare any future run to this:
+
+1. The gap between 73.3% validation and 46.0% test is expected, and is a property
+   of the dataset rather than a bug. README.md section 6 documents that the train
+   and test splits have different class priors: NoAg is 33.1% of train but only
+   18.8% of test, while PAg is 20.8% of train and 32.0% of test. The confusion
+   matrix shows the consequence directly - 50 of the 128 true PAg memes are
+   predicted NoAg. A model that correctly learns the training prior is miscalibrated
+   for this test set. Macro F1 is the more trustworthy metric here.
+
+2. This is far below the paper's published WF1 = 0.742, as README.md section 5
+   predicts it should be. Our captions are raw machine OCR; the paper's were
+   hand-corrected. Also this task is 4-way where the paper's was 5-way. The two
+   effects push in opposite directions and do not cancel in any principled way, so
+   this number replicates the METHOD, not the published SCORE.
+
+
+================================================================================
+ 6. KAGGLE SUBMISSION - CURRENTLY BLOCKED, AND WHY
+================================================================================
+
+This step does NOT work right now, and it is not something a command can fix.
+
+Both submission scripts need sample_submission.csv, which defines the exact
+required row order and the label vocabulary the competition scores against. The
+scripts look for it at ../../sample_submission.csv - that is:
+
+    /home/raiyan/PR/sample_submission.csv        <-- MISSING
+
+On the original Windows machine that file lived at D:\MemeDecode\sample_submission.csv,
+one level above the Replication folder. Only the project folder was carried over to
+this machine, so the file was left behind. Running the submission script today gives:
+
+    FileNotFoundError: /home/raiyan/PR/sample_submission.csv
+
+Nothing else is missing. Outputs/predictions_maf_full.csv already holds a prediction
+for all 400 test images. Once you put sample_submission.csv at /home/raiyan/PR/,
+the submission is one command:
+
+    cd /home/raiyan/PR/memedecoder_2/Scripts
+    python predictions_to_submission.py --predictions ../Outputs/predictions_maf_full.csv
+
+That writes Outputs/submission_maf_full.csv. It reads only image_name and pred_label
+and never touches a ground-truth column.
+
+Alternatively, point it at the file wherever it actually is:
+
+    python predictions_to_submission.py \
+        --predictions ../Outputs/predictions_maf_full.csv \
+        --sample_submission /path/to/sample_submission.csv
+
+Or rebuild predictions from the saved checkpoint instead of the predictions CSV
+(slower, needs the GPU, same answer):
+
+    python generate_submission.py \
+        --checkpoint ../Saved_Models/maf_model_maf_full.pth \
+        --sample_submission /path/to/sample_submission.csv \
+        --out ../Outputs/submission.csv
+
+If you use generate_submission.py, --attn_variant and --heads must match what the
+checkpoint was TRAINED with. For maf_full those are the defaults, so pass neither.
+
+
+================================================================================
+ 7. THE VLM APPROACH  (added 2026-09-19)
+================================================================================
+
+A second, quite different attack on the same problem: instead of OCR-ing the meme and
+feeding the text to Bangla-BERT, hand the meme image straight to a vision-language
+model and ask it which class the meme belongs to.
+
+WHY IT WORKS SO MUCH BETTER
+
+README.md section 5.1 names caption noise as the largest single source of divergence
+from the published result. MAF never sees the meme's text - it sees whatever
+pytesseract managed to extract, and Bengali OCR is weak enough that the paper's own
+authors hand-corrected every caption by hand. A VLM reads the image directly, so the
+OCR stage and all of its errors leave the pipeline entirely.
+
+Scripts/vlm_probe.py shows that gap directly. On testimage013.jpg:
+
+    Tesseract : সস্্ৃস্স্স Rl ani চে AK] যা TEJGAON ... রা / w= Kanyan Bazar 00 2 an,
+    Qwen3-VL  : তেজগাও / আবুল হোটেল / রমনা পার্ক / ঢাকা নিউ মার্কেট / Karwan Bazar
+
+Same image. One is noise, the other is the actual text. That is the whole argument.
+
+HOW A PREDICTION IS MADE
+
+The four classes are offered as lettered options A-D and the class is read off by
+comparing the logits of exactly those four tokens at the first answer position. This
+always returns a valid class (no unparseable free-text answers silently scored as
+wrong), it is one forward pass rather than an autoregressive decode, and it is
+deterministic - a rerun reproduces the number exactly. Pass --decode text to generate
+free text and parse it instead; that mode counts and reports unparsed answers.
+
+--------------------------------------------------------------------------------
+ 7a. Check the model can read Bengali  (~2 min, do this first on a new machine)
+--------------------------------------------------------------------------------
+
+    conda activate memedecoder
+    cd /home/raiyan/PR/memedecoder_2/Scripts
+    python vlm_probe.py --n 4
+
+Prints, per meme, the Tesseract caption next to the VLM's transcription. Judge by eye.
+If the VLM cannot read the Bengali, everything below is measuring the wrong thing and
+you should stop and pick a different model.
+
+First run downloads Qwen3-VL-8B (~17 GB) into .cache/. That download failed once
+mid-way with "Network is unreachable"; it resumes, so just run it again if that
+happens. Nothing needs deleting first.
+
+--------------------------------------------------------------------------------
+ 7b. Zero-shot - no training at all  (~10 min for 400 memes)
+--------------------------------------------------------------------------------
+
+    python vlm_zeroshot.py --subset 20 --run_name vlm_zs_smoke   # ~1 min sanity check
+    python vlm_zeroshot.py --run_name vlm_zeroshot               # the real run
+
+NOTE on --subset: it draws a CLASS-BALANCED sample, so its accuracy is not comparable
+to a full run. The real test set is skewed (PAg 32%, NoAg 18.8%).
+
+Variants:
+
+    # also show the model the OCR caption, instead of image-only
+    python vlm_zeroshot.py --run_name vlm_zs_caption --use_caption
+
+    # free-text generation and parsing instead of A-D logit comparison
+    python vlm_zeroshot.py --run_name vlm_zs_text --decode text
+
+    # a smaller/faster model
+    python vlm_zeroshot.py --model Qwen/Qwen3-VL-4B-Instruct --run_name vlm_zs_4b
+
+--------------------------------------------------------------------------------
+ 7c. QLoRA fine-tune  (~3.5 h for 2 epochs on the 5060 Ti)
+--------------------------------------------------------------------------------
+
+    python vlm_finetune.py --subset 32 --epochs 1 --run_name vlm_ft_smoke  # ~3 min
+    python vlm_finetune.py --run_name vlm_finetuned --epochs 2             # the real run
+
+RUN THE SMOKE TEST FIRST. It costs three minutes and exercises the whole path. Two
+real bugs were caught this way rather than three hours into a full run.
+
+The base weights stay frozen in 4-bit and only LoRA adapters train, which is what
+keeps an 8B model inside 16 GB alongside the vision tower. Loss is computed on the
+single answer token - every prompt token is masked to -100 - so training optimises
+exactly the position inference reads, with no train/test mismatch.
+
+The adapter is saved to Saved_Models/lora_<run_name>/ and is a few MB, not the ~1 GB
+a MAF checkpoint costs.
+
+EXPECT THIS TO POSSIBLY SCORE BELOW ZERO-SHOT. Fine-tuning teaches the training
+distribution (NoAg 33.1%), and the test set has NoAg at 18.8% and PAg at 32.0%. That
+is the same prior mismatch that sank MAF, described in README.md section 6. Zero-shot
+carries no such bias because it never saw the training prior at all. If the fine-tuned
+number lands lower, that is a finding about the dataset, not a broken run.
+
+--------------------------------------------------------------------------------
+ 7d. Known gotchas in this code
+--------------------------------------------------------------------------------
+
+Qwen3-VL returns several parallel per-token tensors (input_ids, attention_mask,
+mm_token_type_ids) and computes its 3D rope index from them jointly. Appending an
+answer token to some but not all of them raises a shape mismatch deep inside the
+model. vlm_finetune.py therefore appends the answer as a chat MESSAGE and lets the
+processor build the whole sequence. Do not "optimise" that back into tensor surgery.
+
+The letters A-D appear in the prompt as well as in the answer, so the answer token is
+located by its LAST occurrence in the sequence, not its first.
+
+--------------------------------------------------------------------------------
+ 7e. Comparing everything you have run
+--------------------------------------------------------------------------------
+
+The VLM scripts write results_<run>.json in the same format main.py uses, so the
+comparison loop in section 5 covers MAF and VLM runs together.
+
+--------------------------------------------------------------------------------
+ 7f. WHY FINE-TUNING SCORED WORSE THAN ZERO-SHOT
+--------------------------------------------------------------------------------
+
+The headline pair looks like a failed fine-tune:
+
+    test set (400 memes)      zero-shot 0.720    fine-tuned 0.680
+
+It is not. Running the untrained model on the VALIDATION split as a control shows what
+actually happened:
+
+                              zero-shot   fine-tuned   change
+    validation (513 memes)      0.626       0.803      +17.7 points
+    test       (400 memes)      0.720       0.680       -4.0 points
+
+Fine-tuning worked, and worked well - it added nearly 18 points on the distribution it
+was trained on. The gain simply does not survive the move to the test set, because the
+two splits do not have the same class priors. From README.md section 6:
+
+                       train/validation      test
+    NoAg                    33.1%           18.8%
+    PAg                     20.8%           32.0%
+
+Fine-tuning taught the model the training prior, so it predicts NoAg far more often:
+
+                       times NoAg predicted    NoAg precision   (75 are truly NoAg)
+    zero-shot                   65                 0.600
+    fine-tuned                 103                 0.495
+
+That is the same failure that sank MAF, which sent 50 of 128 political memes to NoAg.
+The zero-shot model is immune to it for the simple reason that it never saw the
+training prior at all.
+
+Note also that zero-shot scores HIGHER on test (0.720) than on validation (0.626).
+The splits are not equally hard: NoAg is the zero-shot model's weakest class, and the
+test set contains proportionally far fewer NoAg memes. Never compare a validation
+number here against a test number and read the difference as progress.
+
+If you want the fine-tuned model to transfer, the fix is prior correction, not more
+epochs - e.g. class-weighted loss, resampling the training split toward the test
+prior, or adjusting the decision threshold on the four logits at inference time.
+
+
+================================================================================
+ 8. TROUBLESHOOTING
+================================================================================
+
+"cuda: False" from _check_env.py
+    CPU-only torch wheels. Reinstall per section 1b with the cu128 index-url.
+
+"no kernel image is available for execution on the device"
+    torch that does not know sm_120. Same fix - section 1b.
+
+CUDA out of memory
+    Unlikely at batch 4 on a 16 GB card, but if another process is using the GPU,
+    check with nvidia-smi, then either free it or lower --batch_size. Note that
+    changing the batch size departs from the paper's Appendix A setup, so say so
+    when reporting any number produced that way.
+
+ModuleNotFoundError: clip
+    The GitHub install in requirements.txt did not complete. Re-run:
+        pip install git+https://github.com/openai/CLIP.git
+
+Hugging Face rate-limit warning about HF_TOKEN
+    Harmless. The models download anyway, and only on the first run.
+
+Run is very slow / nvidia-smi shows ~0% GPU utilisation
+    It is on the CPU. Confirm with the matmul check in section 1d.
+
+FileNotFoundError mentioning sample_submission.csv
+    Expected - see section 6.
+
+Everything is slow and the first run seems stuck
+    First run downloads ~1 GB of model weights into .cache/. Watch it with:
+        du -sh /home/raiyan/PR/memedecoder_2/.cache
+
+
+================================================================================
+ 9. WHAT CHANGED ON 2026-09-19
+================================================================================
+
+All changes were additive - no existing behaviour was altered:
+
+    Scripts/_logging.py     NEW. Tees console output to Logs/, collapsing progress
+                            bars to one line each.
+    Scripts/main.py         Calls _logging.start() after parsing arguments, and
+                            gained a --no_log flag to opt out. Docstring updated.
+    Scripts/_metrics.py     NEW. The paper's metric set, shared by the VLM scripts so
+                            they write results_<run>.json in main.py's format.
+    Scripts/vlm_probe.py    NEW. Diagnostic - Tesseract vs VLM transcription.
+    Scripts/vlm_zeroshot.py NEW. Zero-shot VLM classification (section 7b).
+    Scripts/vlm_finetune.py NEW. QLoRA fine-tune (section 7c).
+
+    environment             accelerate, peft and bitsandbytes added to `memedecoder`.
+                            torch and transformers were NOT moved. _check_env.py was
+                            re-run afterwards and the MAF stack still imports cleanly.
+
+No MAF model, data, metric or hyperparameter code was touched, so MAF results remain
+directly comparable to runs made before this date.
+
+This folder is not a git repository, so there is no diff to consult and no way to
+revert other than by hand. To undo the logging change: delete Scripts/_logging.py,
+then remove the --no_log argument and the `if not args.no_log:` block from the
+bottom of Scripts/main.py.

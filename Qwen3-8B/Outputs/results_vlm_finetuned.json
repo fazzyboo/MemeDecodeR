@@ -1,0 +1,95 @@
+{
+  "run_name": "vlm_finetuned",
+  "accuracy": 0.68,
+  "weighted_f1": 0.6816633725847718,
+  "macro_f1": 0.6736614977366313,
+  "weighted_precision": 0.6974342622946992,
+  "weighted_recall": 0.68,
+  "mmae": 0.4922229381443299,
+  "per_class": {
+    "NoAg": {
+      "precision": 0.49514563106796117,
+      "recall": 0.68,
+      "f1-score": 0.5730337078651685,
+      "support": 75.0
+    },
+    "GAg": {
+      "precision": 0.7272727272727273,
+      "recall": 0.5773195876288659,
+      "f1-score": 0.6436781609195402,
+      "support": 97.0
+    },
+    "PAg": {
+      "precision": 0.7592592592592593,
+      "recall": 0.640625,
+      "f1-score": 0.6949152542372882,
+      "support": 128.0
+    },
+    "RAg": {
+      "precision": 0.7410714285714286,
+      "recall": 0.83,
+      "f1-score": 0.7830188679245284,
+      "support": 100.0
+    },
+    "accuracy": 0.68,
+    "macro avg": {
+      "precision": 0.6806872615428441,
+      "recall": 0.6819861469072165,
+      "f1-score": 0.6736614977366313,
+      "support": 400.0
+    },
+    "weighted avg": {
+      "precision": 0.6974342622946992,
+      "recall": 0.68,
+      "f1-score": 0.6816633725847718,
+      "support": 400.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      51,
+      12,
+      9,
+      3
+    ],
+    [
+      19,
+      56,
+      10,
+      12
+    ],
+    [
+      26,
+      6,
+      82,
+      14
+    ],
+    [
+      7,
+      3,
+      7,
+      83
+    ]
+  ],
+  "target_names": [
+    "NoAg",
+    "GAg",
+    "PAg",
+    "RAg"
+  ],
+  "approach": "vlm_qlora_finetune",
+  "model": "Qwen/Qwen3-VL-8B-Instruct",
+  "epochs": 2,
+  "lr": 0.0001,
+  "grad_accum": 8,
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "target_modules": "q_proj,k_proj,v_proj,o_proj",
+  "use_caption": false,
+  "best_val_accuracy": 0.8031189083820662,
+  "best_epoch": 2,
+  "adapter": "/home/raiyan/PR/memedecoder_2/Saved_Models/lora_vlm_finetuned",
+  "subset": 0,
+  "seed": 42,
+  "trained_on_this_dataset": true
+}

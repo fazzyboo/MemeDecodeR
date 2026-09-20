@@ -1,0 +1,64 @@
+# started  : 2026-09-19T16:55:55
+# command  : vlm_finetune.py --subset 32 --epochs 1 --run_name vlm_ft_smoke
+# cwd      : /home/raiyan/PR/memedecoder_2/Scripts
+# python   : 3.12.14
+#
+Console log     -> /home/raiyan/PR/memedecoder_2/Logs/vlm_ft_smoke_20260919-165555.log
+SUBSET MODE: 32/32/32 rows (smoke test, not a real result)
+Model           : Qwen/Qwen3-VL-8B-Instruct
+Train/Valid/Test: 32 32 32
+Epochs          : 1 | LR: 0.0001 | grad accum: 8
+LoRA r/alpha    : 16 / 32
+Captions given  : False
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|██████████| 750/750 [00:15<00:00, 49.07it/s] 
+trainable params: 15,335,424 || all params: 8,782,459,120 || trainable%: 0.1746
+Epoch 1/1:   0%|          | 0/32 [00:00<?, ?it/s][transformers] `use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+/home/raiyan/PR/memedecoder_2/Scripts/vlm_finetune.py:215: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  running += float(out.loss)
+Epoch 1/1:   6%|▋         | 2/32 [00:05<01:14,  2.49s/it, acc=1, loss=0.0107]/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (4304) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+Epoch 1/1: 100%|██████████| 32/32 [00:59<00:00,  1.86s/it, acc=0.812, loss=1.14]
+Validation:   0%|          | 0/32 [00:00<?, ?it/s]/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (4304) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+Validation: 100%|██████████| 32/32 [00:30<00:00,  1.04it/s]
+Epoch 1/1, Train Loss: 1.1422, Train Acc: 81.25%, Val Acc: 71.88%
+Adapter Saved. -> /home/raiyan/PR/memedecoder_2/Saved_Models/lora_vlm_ft_smoke
+Best Validation Accuracy: 71.88% (epoch 1)
+--------------------------------
+Restoring best adapter (epoch 1) for the held-out test set..
+Testing:   3%|▎         | 1/32 [00:00<00:28,  1.08it/s]/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/bitsandbytes/backends/cuda/ops.py:957: UserWarning: inner dimension (4304) is not aligned for fast kernel with blocksize=64, falling back to slower implementation.
+  warn(
+Testing: 100%|██████████| 32/32 [00:40<00:00,  1.25s/it]
+Classification Report :
+              precision    recall  f1-score   support
+
+        NoAg      1.000     0.500     0.667         8
+         GAg      0.727     1.000     0.842         8
+         PAg      0.750     0.750     0.750         8
+         RAg      0.778     0.875     0.824         8
+
+    accuracy                          0.781        32
+   macro avg      0.814     0.781     0.771        32
+weighted avg      0.814     0.781     0.771        32
+
+Accuracy :  0.78125
+Precison :  0.8137626262626263
+Recall :  0.78125
+F1 :  0.7705753353973168
+Macro F1 :  0.7705753353973168
+MMAE:  0.375
+
+Confusion matrix (rows = true, cols = predicted)
+      NoAg  GAg  PAg  RAg
+NoAg     4    1    2    1
+GAg      0    8    0    0
+PAg      0    1    6    1
+RAg      0    1    0    7
+
+Saved results   -> /home/raiyan/PR/memedecoder_2/Outputs/results_vlm_ft_smoke.json
+Saved preds     -> /home/raiyan/PR/memedecoder_2/Outputs/predictions_vlm_ft_smoke.csv
+Total time : 157.26s
+#
+# finished : 2026-09-19T16:58:32
