@@ -1,0 +1,73 @@
+# started  : 2026-09-19T16:54:04
+# command  : vlm_finetune.py --subset 32 --epochs 1 --run_name vlm_ft_smoke
+# cwd      : /home/raiyan/PR/memedecoder_2/Scripts
+# python   : 3.12.14
+#
+Console log     -> /home/raiyan/PR/memedecoder_2/Logs/vlm_ft_smoke_20260919-165404.log
+SUBSET MODE: 32/32/32 rows (smoke test, not a real result)
+Model           : Qwen/Qwen3-VL-8B-Instruct
+Train/Valid/Test: 32 32 32
+Epochs          : 1 | LR: 0.0001 | grad accum: 8
+LoRA r/alpha    : 16 / 32
+Captions given  : False
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|██████████| 750/750 [00:12<00:00, 61.26it/s] 
+trainable params: 15,335,424 || all params: 8,782,459,120 || trainable%: 0.1746
+Epoch 1/1:   0%|          | 0/32 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/raiyan/PR/memedecoder_2/Scripts/vlm_finetune.py", line 279, in <module>
+    main(args)
+  File "/home/raiyan/PR/memedecoder_2/Scripts/vlm_finetune.py", line 188, in main
+    out = model(**batch)
+          ^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/peft/peft_model.py", line 2120, in forward
+    return self.base_model(
+           ^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/peft/tuners/tuners_utils.py", line 359, in forward
+    return self.model(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/transformers/models/qwen3_vl/modeling_qwen3_vl.py", line 1361, in forward
+    outputs = self.model(
+              ^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/transformers/utils/generic.py", line 939, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/transformers/models/qwen3_vl/modeling_qwen3_vl.py", line 1228, in forward
+    position_ids = self.compute_3d_position_ids(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/transformers/models/qwen3_vl/modeling_qwen3_vl.py", line 1126, in compute_3d_position_ids
+    position_ids, rope_deltas = self.get_rope_index(
+                                ^^^^^^^^^^^^^^^^^^^^
+  File "/home/raiyan/anaconda3/envs/memedecoder/lib/python3.12/site-packages/transformers/models/qwen3_vl/modeling_qwen3_vl.py", line 996, in get_rope_index
+    input_token_type = input_token_type[attention_mask[batch_idx].bool()]
+                       ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+IndexError: The shape of the mask [765] at index 0 does not match the shape of the indexed tensor [764] at index 0
+#
+# finished : 2026-09-19T16:54:30

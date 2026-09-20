@@ -1,0 +1,48 @@
+# started  : 2026-09-19T20:18:10
+# command  : vlm_zeroshot.py --split validation_set --run_name vlm_zeroshot_val
+# cwd      : /home/raiyan/PR/memedecoder_2/Scripts
+# python   : 3.12.14
+#
+Console log     -> /home/raiyan/PR/memedecoder_2/Logs/vlm_zeroshot_val_20260919-201810.log
+Split           : validation_set | 513 memes
+Model           : Qwen/Qwen3-VL-8B-Instruct
+Load in 4-bit   : False
+Captions given  : False (image-only is the point of this baseline)
+Decode          : letter
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|██████████| 750/750 [00:10<00:00, 70.80it/s] 
+Some parameters are on the meta device because they were offloaded to the cpu.
+Model loaded. VRAM allocated: 12.8 GB
+Letter token ids: [[32, 362], [33, 425], [34, 356], [35, 422]]
+Classifying: 100%|██████████| 513/513 [08:53<00:00,  1.04s/it]
+Classification Report :
+              precision    recall  f1-score   support
+
+        NoAg      0.643     0.491     0.557       169
+         GAg      0.516     0.896     0.655       125
+         PAg      0.719     0.598     0.653       107
+         RAg      0.795     0.554     0.653       112
+
+    accuracy                          0.626       513
+   macro avg      0.668     0.635     0.629       513
+weighted avg      0.661     0.626     0.622       513
+
+Accuracy :  0.6257309941520468
+Precison :  0.6612515095343963
+Recall :  0.6257309941520468
+F1 :  0.6218022855537401
+Macro F1 :  0.6294276358842135
+MMAE:  0.6057710556876624
+
+Confusion matrix (rows = true, cols = predicted)
+      NoAg  GAg  PAg  RAg
+NoAg    83   60   13   13
+GAg      8  112    5    0
+PAg     19   21   64    3
+RAg     19   24    7   62
+
+Saved results   -> /home/raiyan/PR/memedecoder_2/Outputs/results_vlm_zeroshot_val.json
+Saved preds     -> /home/raiyan/PR/memedecoder_2/Outputs/predictions_vlm_zeroshot_val.csv
+Total time : 556.53s
+#
+# finished : 2026-09-19T20:27:27

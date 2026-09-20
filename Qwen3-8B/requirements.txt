@@ -1,0 +1,39 @@
+# Verified working set for this replication on Python 3.12 (Windows, CPU).
+#
+# The original repository pins a Python 3.10 / 2024-era stack (torch 2.4.0,
+# transformers 4.44.2, numpy 1.26.4, pandas 2.1.4). Those pins do not resolve on
+# Python 3.12, so the versions below are the current releases that were actually
+# installed and exercised end to end. The MAF code paths used here are stable across
+# both generations; the one API that moved, transformers.AdamW, was imported but never
+# used by the original and has been dropped.
+#
+# Install (CPU):
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+#   pip install -r requirements.txt
+#
+# Install (CUDA GPU - recommended for real training):
+#   pip install torch torchvision          # default index ships CUDA wheels
+#   pip install -r requirements.txt
+
+numpy==2.5.2
+pandas==3.0.5
+scikit-learn==1.9.1
+imbalanced-learn==0.14.2
+Pillow==12.3.0
+matplotlib==3.11.2
+seaborn==0.13.2
+tqdm==4.70.1
+transformers==5.17.0
+sentencepiece==0.2.2
+beautifulsoup4==4.15.0
+nltk==3.10.3
+ftfy==6.3.1
+regex==2026.9.10
+opencv-python==5.0.0.93
+madgrad==1.3
+
+# Stage 1 (OCR). Also needs the Tesseract BINARY plus ben.traineddata - see README.
+pytesseract==0.3.13
+
+# CLIP image encoder, installed from source exactly as the original requirements.txt does.
+git+https://github.com/openai/CLIP.git
