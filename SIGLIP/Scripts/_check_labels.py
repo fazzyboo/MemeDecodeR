@@ -6,7 +6,7 @@ import os
 
 import pandas as pd
 
-from prepare_dataset import LABEL_ORDER, PROJECT_ROOT, SHORT, load_source_labels
+from SIGLIP.Scripts.prepare_dataset import LABEL_ORDER, PROJECT_ROOT, SHORT, load_source_labels
 
 labels = load_source_labels(PROJECT_ROOT)
 print("total labelled rows:", len(labels))

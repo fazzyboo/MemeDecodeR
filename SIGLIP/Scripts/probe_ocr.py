@@ -15,7 +15,7 @@ import random
 import re
 import time
 
-from ocr_captions import ROOT_DIR, clean_caption, configure_tesseract, preprocess
+from SIGLIP.Scripts.ocr_captions import ROOT_DIR, clean_caption, configure_tesseract, preprocess
 
 BENGALI = re.compile(r"[ঀ-৿]")
 

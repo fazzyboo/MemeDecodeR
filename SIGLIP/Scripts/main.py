@@ -17,7 +17,7 @@ Usage:
     python main.py                        # full run, paper hyperparameters
     python main.py --subset 24 --n_iter 1 # smoke test
 """
-import _paths  # noqa: F401  - must precede transformers / clip imports
+import SIGLIP.Scripts._paths as _paths  # noqa: F401  - must precede transformers / clip imports
 
 import argparse
 import json
@@ -36,8 +36,8 @@ from sklearn.metrics import (
     recall_score,
 )
 
-import dataset as d
-import evaluation as e
+import SIGLIP.Scripts.dataset as d
+import SIGLIP.Scripts.evaluation as e
 
 try:
     from imblearn.metrics import macro_averaged_mean_absolute_error

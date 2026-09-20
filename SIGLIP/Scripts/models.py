@@ -33,7 +33,7 @@ stepping if you want to measure the difference.
 """
 import os
 
-import _paths  # noqa: F401  - must precede transformers / clip imports
+import SIGLIP.Scripts._paths as _paths  # noqa: F401  - must precede transformers / clip imports
 
 import clip
 import torch

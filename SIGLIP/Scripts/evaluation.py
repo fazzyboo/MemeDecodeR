@@ -1,5 +1,5 @@
 """Training/evaluation pipeline - port of the original MIMOSA Scripts/evaluation.py."""
-import models as m
+import SIGLIP.Scripts.models as m
 
 
 def pipline(

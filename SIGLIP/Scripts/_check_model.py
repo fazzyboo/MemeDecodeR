@@ -3,11 +3,11 @@
 Runs without any dataset, so it can validate shapes and API compatibility while OCR is
 still going. Also forces the Bangla-BERT and CLIP downloads to happen up front.
 """
-import _paths  # noqa: F401
+import SIGLIP.Scripts._paths as _paths  # noqa: F401
 
 import torch
 
-import models as m
+import SIGLIP.Scripts.models as m
 
 BATCH, SEQ, CLASSES, HEADS = 2, 70, 4, 16
 

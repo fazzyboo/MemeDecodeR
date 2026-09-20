@@ -17,7 +17,7 @@ Changes from the original, all of them forced by our dataset or by running witho
 import os
 import time
 
-import _paths  # noqa: F401  - must precede the transformers import
+import SIGLIP.Scripts._paths as _paths  # noqa: F401  - must precede the transformers import
 
 import pandas as pd
 import torch

@@ -1,4 +1,4 @@
-import _paths  # noqa: F401
+import SIGLIP.Scripts._paths as _paths  # noqa: F401
 
 import torch
 import transformers
