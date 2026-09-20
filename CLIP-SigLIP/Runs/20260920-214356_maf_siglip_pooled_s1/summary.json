@@ -1,0 +1,191 @@
+{
+  "run_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-214356_maf_siglip_pooled_s1",
+  "config": {
+    "approach": "MAF with SigLIP vision encoder (CLIP replaced)",
+    "vision_model": "google/siglip-base-patch16-224",
+    "vision_mode": "pooled",
+    "text_model": "sagorsarker/bangla-bert-base",
+    "imagenet_norm": false,
+    "max_len": 70,
+    "batch_size": 16,
+    "n_heads": 16,
+    "epochs": 5,
+    "lr_rate": 5e-05,
+    "scheduler": "per_epoch",
+    "select_on": "accuracy",
+    "seed": 1,
+    "max_batches": 0,
+    "dataset_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Dataset",
+    "run_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-214356_maf_siglip_pooled_s1",
+    "command": "/home/raiyan/anaconda3/envs/memedecoder/bin/python maf_siglip.py --n_iter 5 --seed 1 --run_name maf_siglip_pooled_s1"
+  },
+  "params": {
+    "total": 260529413,
+    "trainable": 167645189,
+    "groups": {
+      "vision": 92884224,
+      "bert": 164396544,
+      "visual_linear": 590592,
+      "attention": 2362368,
+      "fc": 295685
+    }
+  },
+  "best_validation": {
+    "score": 0.6946354883081155,
+    "epoch": 3,
+    "val_accuracy": 0.6946354883081155,
+    "val_macro_f1": 0.696540785395327
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "train_loss": 1.104087,
+      "train_acc": 0.549296,
+      "val_acc": 0.671252,
+      "val_macro_f1": 0.667777,
+      "epoch_time_s": 41.16,
+      "is_best": true
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.632135,
+      "train_acc": 0.757042,
+      "val_acc": 0.674003,
+      "val_macro_f1": 0.679035,
+      "epoch_time_s": 40.7,
+      "is_best": true
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.354823,
+      "train_acc": 0.875587,
+      "val_acc": 0.694635,
+      "val_macro_f1": 0.696541,
+      "epoch_time_s": 40.39,
+      "is_best": true
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.230123,
+      "train_acc": 0.926056,
+      "val_acc": 0.682256,
+      "val_macro_f1": 0.695146,
+      "epoch_time_s": 39.57,
+      "is_best": false
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.179714,
+      "train_acc": 0.93662,
+      "val_acc": 0.691884,
+      "val_macro_f1": 0.688841,
+      "epoch_time_s": 39.63,
+      "is_best": false
+    }
+  ],
+  "timings_s": {
+    "training_s": 201.88,
+    "test_eval_s": 4.46
+  },
+  "test": {
+    "accuracy": 0.7074175824175825,
+    "weighted_precision": 0.7093370990462079,
+    "weighted_recall": 0.7074175824175825,
+    "weighted_f1": 0.7020561077941894,
+    "macro_precision": 0.7198566193703855,
+    "macro_recall": 0.7121047648556451,
+    "macro_f1": 0.7094600647780837,
+    "micro_f1": 0.7074175824175823,
+    "mmae": 0.7137008922220189,
+    "confusion_matrix": [
+      [
+        127,
+        30,
+        2,
+        9,
+        14
+      ],
+      [
+        19,
+        112,
+        0,
+        2,
+        11
+      ],
+      [
+        7,
+        2,
+        101,
+        4,
+        14
+      ],
+      [
+        4,
+        5,
+        0,
+        119,
+        4
+      ],
+      [
+        42,
+        31,
+        5,
+        8,
+        56
+      ]
+    ],
+    "support_true": {
+      "NoAg": 182,
+      "GAg": 144,
+      "PAg": 128,
+      "RAg": 132,
+      "Oth": 142
+    },
+    "support_pred": {
+      "NoAg": 199,
+      "GAg": 180,
+      "PAg": 108,
+      "RAg": 142,
+      "Oth": 99
+    },
+    "split": "test",
+    "n_samples": 728
+  },
+  "test_per_class": {
+    "NoAg": {
+      "full_name": "non-aggressive",
+      "precision": 0.6381909547738693,
+      "recall": 0.6978021978021978,
+      "f1-score": 0.6666666666666666,
+      "support": 182.0
+    },
+    "GAg": {
+      "full_name": "gendered aggression",
+      "precision": 0.6222222222222222,
+      "recall": 0.7777777777777778,
+      "f1-score": 0.6913580246913581,
+      "support": 144.0
+    },
+    "PAg": {
+      "full_name": "political aggression",
+      "precision": 0.9351851851851852,
+      "recall": 0.7890625,
+      "f1-score": 0.8559322033898306,
+      "support": 128.0
+    },
+    "RAg": {
+      "full_name": "religious aggression",
+      "precision": 0.8380281690140845,
+      "recall": 0.9015151515151515,
+      "f1-score": 0.8686131386861314,
+      "support": 132.0
+    },
+    "Oth": {
+      "full_name": "others",
+      "precision": 0.5656565656565656,
+      "recall": 0.39436619718309857,
+      "f1-score": 0.4647302904564315,
+      "support": 142.0
+    }
+  }
+}

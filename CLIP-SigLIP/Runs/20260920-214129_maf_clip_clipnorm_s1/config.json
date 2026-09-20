@@ -1,0 +1,19 @@
+{
+  "approach": "MAF with SigLIP vision encoder (CLIP replaced)",
+  "vision_model": "openai/clip-vit-base-patch32",
+  "vision_mode": "pooled",
+  "text_model": "sagorsarker/bangla-bert-base",
+  "imagenet_norm": false,
+  "max_len": 70,
+  "batch_size": 16,
+  "n_heads": 16,
+  "epochs": 5,
+  "lr_rate": 5e-05,
+  "scheduler": "per_epoch",
+  "select_on": "accuracy",
+  "seed": 1,
+  "max_batches": 0,
+  "dataset_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Dataset",
+  "run_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-214129_maf_clip_clipnorm_s1",
+  "command": "/home/raiyan/anaconda3/envs/memedecoder/bin/python maf_siglip.py --vision_model openai/clip-vit-base-patch32 --n_iter 5 --seed 1 --run_name maf_clip_clipnorm_s1"
+}

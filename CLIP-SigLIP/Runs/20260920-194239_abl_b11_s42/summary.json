@@ -1,0 +1,289 @@
+{
+  "run_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-194239_abl_b11_s42",
+  "config": {
+    "approach": "AdaptFormer PEFT on the CLIP vision tower",
+    "backbone": "ViT-B/32",
+    "head": "zeroshot",
+    "bottleneck": 64,
+    "scalar": "0.1",
+    "adapter_dropout": 0.0,
+    "adapter_ln": "none",
+    "adapter_init": "lora",
+    "adapter_mode": "parallel",
+    "blocks": "11",
+    "train_layernorms": false,
+    "epochs": 10,
+    "batch_size": 64,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "warmup_ratio": 0.1,
+    "label_smoothing": 0.0,
+    "grad_clip": 1.0,
+    "class_weights": false,
+    "select_on": "macro_f1",
+    "augment": false,
+    "amp": "bf16",
+    "seed": 42,
+    "max_batches": 0,
+    "eval_only": null,
+    "dataset_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Dataset",
+    "run_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-194239_abl_b11_s42",
+    "command": "/home/raiyan/anaconda3/envs/memedecoder/bin/python /home/raiyan/PR/Bengali-Aggression-Memes/Scripts/clip_adaptformer.py --backbone ViT-B/32 --blocks 11 --bottleneck 64 --epochs 10 --batch_size 64 --lr 0.001 --seed 42 --head zeroshot --select_on macro_f1 --run_name abl_b11_s42 --log_dir Runs --num_workers 4"
+  },
+  "adaptformer": {
+    "blocks_total": 12,
+    "blocks_adapted": 1,
+    "block_indices": [
+      11
+    ],
+    "width": 768,
+    "bottleneck": 64,
+    "scalar": "0.1",
+    "dropout": 0.0,
+    "layernorm_option": "none",
+    "init_option": "lora",
+    "mode": "parallel",
+    "adapter_params": 99136,
+    "params_per_adapter": 99136
+  },
+  "trainable": {
+    "total_params": 87950913,
+    "trainable_params": 101697,
+    "frozen_params": 87849216,
+    "trainable_fraction": 0.001156,
+    "trainable_tensors": 6,
+    "trainable_names_sample": [
+      "visual.transformer.resblocks.11.adapter.down_proj.weight",
+      "visual.transformer.resblocks.11.adapter.down_proj.bias",
+      "visual.transformer.resblocks.11.adapter.up_proj.weight",
+      "visual.transformer.resblocks.11.adapter.up_proj.bias",
+      "head.weight",
+      "head.logit_scale"
+    ]
+  },
+  "best_validation": {
+    "score": 0.67533856226874,
+    "epoch": 8,
+    "val_accuracy": 0.6643741403026134,
+    "val_macro_f1": 0.67533856226874
+  },
+  "epochs": [
+    {
+      "epoch": 0,
+      "val_acc": 0.36176066024759285,
+      "val_macro_f1": 0.3125438184482418,
+      "note": "before training (zero-shot equivalent)"
+    },
+    {
+      "epoch": 1,
+      "train_loss": 1.223175,
+      "train_acc": 0.520544,
+      "val_acc": 0.592847,
+      "val_macro_f1": 0.590663,
+      "epoch_time_s": 13.61,
+      "is_best": true
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.916674,
+      "train_acc": 0.652199,
+      "val_acc": 0.620358,
+      "val_macro_f1": 0.626005,
+      "epoch_time_s": 13.87,
+      "is_best": true
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.821658,
+      "train_acc": 0.690394,
+      "val_acc": 0.616231,
+      "val_macro_f1": 0.636438,
+      "epoch_time_s": 13.57,
+      "is_best": true
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.763507,
+      "train_acc": 0.713831,
+      "val_acc": 0.645117,
+      "val_macro_f1": 0.648785,
+      "epoch_time_s": 13.83,
+      "is_best": true
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.712391,
+      "train_acc": 0.731481,
+      "val_acc": 0.650619,
+      "val_macro_f1": 0.661029,
+      "epoch_time_s": 13.74,
+      "is_best": true
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.673431,
+      "train_acc": 0.73669,
+      "val_acc": 0.656121,
+      "val_macro_f1": 0.661576,
+      "epoch_time_s": 14.12,
+      "is_best": true
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.615303,
+      "train_acc": 0.768808,
+      "val_acc": 0.642366,
+      "val_macro_f1": 0.650163,
+      "epoch_time_s": 13.85,
+      "is_best": false
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.588973,
+      "train_acc": 0.789062,
+      "val_acc": 0.664374,
+      "val_macro_f1": 0.675339,
+      "epoch_time_s": 14.51,
+      "is_best": true
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.554824,
+      "train_acc": 0.798032,
+      "val_acc": 0.658872,
+      "val_macro_f1": 0.665114,
+      "epoch_time_s": 13.44,
+      "is_best": false
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.57052,
+      "train_acc": 0.779514,
+      "val_acc": 0.660248,
+      "val_macro_f1": 0.669041,
+      "epoch_time_s": 13.66,
+      "is_best": false
+    }
+  ],
+  "timings_s": {
+    "training_s": 140.86,
+    "test_eval_s": 2.52
+  },
+  "test": {
+    "accuracy": 0.625,
+    "weighted_precision": 0.6287060075616664,
+    "weighted_recall": 0.625,
+    "weighted_f1": 0.6248077195859766,
+    "macro_precision": 0.6399898505218813,
+    "macro_recall": 0.6288459730801281,
+    "macro_f1": 0.6325626929338045,
+    "micro_f1": 0.625,
+    "mmae": 0.9265861803493844,
+    "confusion_matrix": [
+      [
+        115,
+        20,
+        9,
+        9,
+        29
+      ],
+      [
+        27,
+        89,
+        4,
+        5,
+        19
+      ],
+      [
+        11,
+        6,
+        98,
+        3,
+        10
+      ],
+      [
+        21,
+        7,
+        3,
+        96,
+        5
+      ],
+      [
+        44,
+        23,
+        9,
+        9,
+        57
+      ]
+    ],
+    "support_true": {
+      "NoAg": 182,
+      "GAg": 144,
+      "PAg": 128,
+      "RAg": 132,
+      "Oth": 142
+    },
+    "support_pred": {
+      "NoAg": 218,
+      "GAg": 145,
+      "PAg": 123,
+      "RAg": 122,
+      "Oth": 120
+    },
+    "split": "test",
+    "n_samples": 728,
+    "binary_aggression": {
+      "positive_class": "aggressive (any target)",
+      "accuracy": 0.7664835164835165,
+      "precision": 0.8686274509803922,
+      "recall": 0.8113553113553114,
+      "f1": 0.8390151515151516,
+      "macro_f1": 0.7070075757575758,
+      "n_aggressive_true": 546,
+      "n_aggressive_pred": 510
+    },
+    "majority_baseline": {
+      "always_predicts": "non-aggressive",
+      "accuracy": 0.25,
+      "macro_f1": 0.08,
+      "weighted_f1": 0.09999999999999999
+    }
+  },
+  "test_per_class": {
+    "NoAg": {
+      "full_name": "non-aggressive",
+      "precision": 0.5275229357798165,
+      "recall": 0.6318681318681318,
+      "f1-score": 0.5749999999999998,
+      "support": 182.0
+    },
+    "GAg": {
+      "full_name": "gendered aggression",
+      "precision": 0.6137931034482759,
+      "recall": 0.6180555555555556,
+      "f1-score": 0.615916955017301,
+      "support": 144.0
+    },
+    "PAg": {
+      "full_name": "political aggression",
+      "precision": 0.7967479674796748,
+      "recall": 0.765625,
+      "f1-score": 0.7808764940239042,
+      "support": 128.0
+    },
+    "RAg": {
+      "full_name": "religious aggression",
+      "precision": 0.7868852459016393,
+      "recall": 0.7272727272727273,
+      "f1-score": 0.7559055118110236,
+      "support": 132.0
+    },
+    "Oth": {
+      "full_name": "others",
+      "precision": 0.475,
+      "recall": 0.4014084507042254,
+      "f1-score": 0.4351145038167939,
+      "support": 142.0
+    }
+  }
+}

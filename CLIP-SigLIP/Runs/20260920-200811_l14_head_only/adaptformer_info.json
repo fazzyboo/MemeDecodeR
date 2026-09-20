@@ -1,0 +1,14 @@
+{
+  "blocks_total": 24,
+  "blocks_adapted": 0,
+  "block_indices": [],
+  "width": 1024,
+  "bottleneck": 64,
+  "scalar": "0.1",
+  "dropout": 0.0,
+  "layernorm_option": "none",
+  "init_option": "lora",
+  "mode": "parallel",
+  "adapter_params": 0,
+  "params_per_adapter": 0
+}

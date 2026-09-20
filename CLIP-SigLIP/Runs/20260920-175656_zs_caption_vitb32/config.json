@@ -1,0 +1,18 @@
+{
+  "approach": "CLIP zero-shot (no training, no BanglaBERT, no checkpoint)",
+  "backbone": "ViT-B/32",
+  "splits": [
+    "test"
+  ],
+  "mode": "caption",
+  "alpha": 0.5,
+  "alpha_sweep": false,
+  "prompt_file": null,
+  "dataset_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Dataset",
+  "batch_size": 64,
+  "max_samples": 0,
+  "seed": 42,
+  "device": "cuda:0",
+  "run_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-175656_zs_caption_vitb32",
+  "command": "/home/raiyan/anaconda3/envs/memedecoder/bin/python clip_zeroshot.py --mode caption --split test --run_name zs_caption_vitb32"
+}

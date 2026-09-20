@@ -1,0 +1,183 @@
+{
+  "run_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-175656_zs_caption_vitb32",
+  "config": {
+    "approach": "CLIP zero-shot (no training, no BanglaBERT, no checkpoint)",
+    "backbone": "ViT-B/32",
+    "splits": [
+      "test"
+    ],
+    "mode": "caption",
+    "alpha": 0.5,
+    "alpha_sweep": false,
+    "prompt_file": null,
+    "dataset_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Dataset",
+    "batch_size": 64,
+    "max_samples": 0,
+    "seed": 42,
+    "device": "cuda:0",
+    "run_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-175656_zs_caption_vitb32",
+    "command": "/home/raiyan/anaconda3/envs/memedecoder/bin/python clip_zeroshot.py --mode caption --split test --run_name zs_caption_vitb32",
+    "alpha_used": 0.5
+  },
+  "prompts": {
+    "non-aggressive": [
+      "a harmless funny internet meme",
+      "a wholesome joke meme with no insult",
+      "a neutral photo with caption text",
+      "a friendly lighthearted meme",
+      "a meme that does not attack anyone"
+    ],
+    "gendered aggression": [
+      "a sexist meme insulting a woman",
+      "a misogynistic meme attacking women",
+      "a meme mocking a woman's appearance or body",
+      "a meme attacking someone for their gender",
+      "a meme objectifying a woman"
+    ],
+    "political aggression": [
+      "a meme attacking a politician",
+      "a political meme insulting a political party",
+      "a meme mocking a government leader",
+      "an angry political protest meme",
+      "a meme criticising a prime minister or minister"
+    ],
+    "religious aggression": [
+      "a meme attacking a religion",
+      "a meme insulting religious people",
+      "a meme mocking a religious figure or symbol",
+      "a communal hate meme about religion",
+      "a meme showing a mosque temple or religious clothing with hostile text"
+    ],
+    "others": [
+      "an aggressive meme insulting a person",
+      "an offensive meme with abusive text",
+      "a meme attacking someone personally",
+      "an angry insulting meme with harsh words",
+      "a rude meme bullying an individual"
+    ]
+  },
+  "results": {
+    "test": {
+      "accuracy": 0.25137362637362637,
+      "weighted_precision": 0.12260431875816491,
+      "weighted_recall": 0.25137362637362637,
+      "weighted_f1": 0.10984438656247912,
+      "macro_precision": 0.1116083916083916,
+      "macro_recall": 0.20233709952019813,
+      "macro_f1": 0.0901442082928759,
+      "micro_f1": 0.25137362637362637,
+      "mmae": 2.0015101877777934,
+      "confusion_matrix": [
+        [
+          179,
+          0,
+          0,
+          0,
+          3
+        ],
+        [
+          139,
+          0,
+          0,
+          0,
+          5
+        ],
+        [
+          128,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          131,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          138,
+          0,
+          0,
+          0,
+          4
+        ]
+      ],
+      "support_true": {
+        "NoAg": 182,
+        "GAg": 144,
+        "PAg": 128,
+        "RAg": 132,
+        "Oth": 142
+      },
+      "support_pred": {
+        "NoAg": 715,
+        "GAg": 0,
+        "PAg": 0,
+        "RAg": 0,
+        "Oth": 13
+      },
+      "split": "test",
+      "mode": "caption",
+      "alpha": null,
+      "n_samples": 728,
+      "binary_aggression": {
+        "positive_class": "aggressive (any target)",
+        "accuracy": 0.25961538461538464,
+        "precision": 0.7692307692307693,
+        "recall": 0.018315018315018316,
+        "f1": 0.03577817531305903,
+        "macro_f1": 0.21744315677581602,
+        "n_aggressive_true": 546,
+        "n_aggressive_pred": 13
+      },
+      "majority_baseline": {
+        "always_predicts": "non-aggressive",
+        "accuracy": 0.25,
+        "macro_f1": 0.08,
+        "weighted_f1": 0.09999999999999999
+      }
+    }
+  },
+  "per_class": {
+    "test": {
+      "NoAg": {
+        "full_name": "non-aggressive",
+        "precision": 0.25034965034965034,
+        "recall": 0.9835164835164835,
+        "f1-score": 0.399108138238573,
+        "support": 182.0
+      },
+      "GAg": {
+        "full_name": "gendered aggression",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 144.0
+      },
+      "PAg": {
+        "full_name": "political aggression",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 128.0
+      },
+      "RAg": {
+        "full_name": "religious aggression",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 132.0
+      },
+      "Oth": {
+        "full_name": "others",
+        "precision": 0.3076923076923077,
+        "recall": 0.028169014084507043,
+        "f1-score": 0.05161290322580645,
+        "support": 142.0
+      }
+    }
+  },
+  "timings_s": {}
+}

@@ -1,0 +1,33 @@
+MAF + SigLIP on MIMOSA -- test set
+run: 20260920-210749_maf_siglip_inorm
+vision: google/siglip-base-patch16-224 (pooled)   text: sagorsarker/bangla-bert-base
+normalisation: ImageNet (dataset.py)
+trainable: 167,645,189 of 260,529,413
+samples: 728
+
+              precision    recall  f1-score   support
+
+        NoAg      0.595     0.703     0.645       182
+         GAg      0.714     0.625     0.667       144
+         PAg      0.753     0.859     0.803       128
+         RAg      0.848     0.848     0.848       132
+         Oth      0.569     0.437     0.494       142
+
+    accuracy                          0.690       728
+   macro avg      0.696     0.695     0.691       728
+weighted avg      0.687     0.690     0.684       728
+
+
+Accuracy           : 0.6896
+Weighted Precision : 0.6874
+Weighted Recall    : 0.6896
+Weighted F1        : 0.6845
+Macro F1           : 0.6914
+MMAE               : 0.7357650345546471
+
+Confusion matrix (rows = true, cols = predicted, order NoAg, GAg, PAg, RAg, Oth):
+  NoAg     128     16     11      6     21
+  GAg       31     90      3      4     16
+  PAg        9      1    110      2      6
+  RAg        7      3      6    112      4
+  Oth       40     16     16      8     62

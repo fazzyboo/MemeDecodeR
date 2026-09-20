@@ -1,0 +1,24 @@
+2026-09-20 19:55:43 | INFO    | +     1.4s | Run directory: /home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-195541_ablseed_b00_s1
+2026-09-20 19:55:43 | INFO    | +     1.5s | Device cuda:0, autocast=bf16
+2026-09-20 19:55:43 | INFO    | +     1.5s | Collecting environment ...
+2026-09-20 19:55:43 | INFO    | +     2.2s | Loading CLIP ViT-B/32 ...
+2026-09-20 19:55:45 | INFO    | +     4.3s | AdaptFormer injected into 1/12 blocks (width 768, r=64, s=0.1, parallel): 99,136 adapter params (99,136 per block)
+2026-09-20 19:55:45 | INFO    | +     4.3s | Trainable: 101,697 / 87,950,913 (0.116%) -- adapters 99,136, head 2,561
+2026-09-20 19:55:45 | INFO    | +     4.3s | Loaders: 54/12/12 train/val/test batches (3393/727/728 memes)
+2026-09-20 19:55:48 | INFO    | +     7.0s | epoch 0 (no training yet): val_acc=36.18% val_macroF1=0.3125  <- equals the clip_zeroshot.py baseline exactly under --no_amp; bf16 autocast shifts it by a few borderline samples
+2026-09-20 19:56:02 | INFO    | +    21.2s | epoch 1: train_loss=1.2399 train_acc=50.81% val_acc=59.70% val_macroF1=0.6090 (14.3s) *best*
+2026-09-20 19:56:16 | INFO    | +    34.8s | epoch 2: train_loss=0.9196 train_acc=65.34% val_acc=62.17% val_macroF1=0.6231 (13.6s) *best*
+2026-09-20 19:56:30 | INFO    | +    48.7s | epoch 3: train_loss=0.7910 train_acc=71.04% val_acc=64.65% val_macroF1=0.6620 (13.9s) *best*
+2026-09-20 19:56:44 | INFO    | +    62.9s | epoch 4: train_loss=0.7132 train_acc=73.52% val_acc=65.06% val_macroF1=0.6600 (14.2s)
+2026-09-20 19:56:58 | INFO    | +    76.6s | epoch 5: train_loss=0.6391 train_acc=76.79% val_acc=65.89% val_macroF1=0.6707 (13.7s) *best*
+2026-09-20 19:57:12 | INFO    | +    90.6s | epoch 6: train_loss=0.5893 train_acc=78.70% val_acc=63.69% val_macroF1=0.6436 (14.0s)
+2026-09-20 19:57:26 | INFO    | +   105.0s | epoch 7: train_loss=0.5219 train_acc=81.19% val_acc=64.92% val_macroF1=0.6573 (14.4s)
+2026-09-20 19:57:40 | INFO    | +   118.6s | epoch 8: train_loss=0.5172 train_acc=81.68% val_acc=65.47% val_macroF1=0.6631 (13.6s)
+2026-09-20 19:57:53 | INFO    | +   132.4s | epoch 9: train_loss=0.4651 train_acc=84.69% val_acc=65.34% val_macroF1=0.6617 (13.8s)
+2026-09-20 19:58:07 | INFO    | +   146.2s | epoch 10: train_loss=0.4638 train_acc=85.16% val_acc=65.34% val_macroF1=0.6619 (13.8s)
+2026-09-20 19:58:07 | INFO    | +   146.2s | Best epoch 5 by macro_f1 (val macro F1 0.6707, val acc 65.89%)
+2026-09-20 19:58:07 | INFO    | +   146.2s | Trained tensors only: /home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-195541_ablseed_b00_s1/adapter_head.pt (0.4 MB)
+2026-09-20 19:58:07 | INFO    | +   146.2s | Reloaded best adapters+head for testing
+2026-09-20 19:58:07 | INFO    | +   146.2s | === TEST EVALUATION ===
+2026-09-20 19:58:10 | INFO    | +   149.0s | TEST acc=61.40%  weightedF1=0.6177  macroF1=0.6280  MMAE=0.9320781429056076
+2026-09-20 19:58:10 | INFO    | +   149.0s | Run finished with exit code 0 (149.0s wall clock)

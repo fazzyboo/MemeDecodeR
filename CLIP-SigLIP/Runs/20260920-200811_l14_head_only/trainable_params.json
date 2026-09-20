@@ -1,0 +1,15 @@
+{
+  "total_params": 303970049,
+  "trainable_params": 3841,
+  "frozen_params": 303966208,
+  "trainable_fraction": 1.3e-05,
+  "trainable_tensors": 2,
+  "trainable_names_sample": [
+    "head.weight",
+    "head.logit_scale"
+  ],
+  "groups": {
+    "head": 3841
+  },
+  "feature_dim": 768
+}

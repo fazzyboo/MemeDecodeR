@@ -1,0 +1,14 @@
+{
+  "total": 260529413,
+  "trainable": 167645189,
+  "frozen": 92884224,
+  "groups": {
+    "vision": 92884224,
+    "bert": 164396544,
+    "visual_linear": 590592,
+    "attention": 2362368,
+    "fc": 295685
+  },
+  "vision_dim": 768,
+  "text_dim": 768
+}

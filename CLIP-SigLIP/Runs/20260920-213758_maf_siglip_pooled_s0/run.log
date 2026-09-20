@@ -1,0 +1,17 @@
+2026-09-20 21:37:58 | INFO    | +     0.9s | Run directory: /home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-213758_maf_siglip_pooled_s0
+2026-09-20 21:37:59 | INFO    | +     1.0s | Collecting environment ...
+2026-09-20 21:38:00 | INFO    | +     2.5s | Building MAF with google/siglip-base-patch16-224 (pooled features) + sagorsarker/bangla-bert-base ...
+2026-09-20 21:38:01 | INFO    | +     3.2s | Model: 260,529,413 params (167,645,189 trainable, 92,884,224 frozen); vision_dim=768, text_dim=768
+2026-09-20 21:38:02 | INFO    | +     4.7s | Image pipeline: resize 224x224, mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]  (the encoder's own constants)
+2026-09-20 21:38:02 | INFO    | +     4.8s | Loaders: 213/46/46 train/val/test batches
+2026-09-20 21:38:43 | INFO    | +    45.4s | epoch 1: train_loss=1.1067 train_acc=54.84% val_acc=68.09% val_macroF1=0.6908 (40.6s) *best*
+2026-09-20 21:39:24 | INFO    | +    86.1s | epoch 2: train_loss=0.5977 train_acc=77.93% val_acc=71.39% val_macroF1=0.7231 (40.8s) *best*
+2026-09-20 21:40:03 | INFO    | +   125.9s | epoch 3: train_loss=0.3670 train_acc=87.24% val_acc=68.78% val_macroF1=0.6934 (39.7s)
+2026-09-20 21:40:43 | INFO    | +   165.4s | epoch 4: train_loss=0.2100 train_acc=93.40% val_acc=69.33% val_macroF1=0.7044 (39.6s)
+2026-09-20 21:41:23 | INFO    | +   205.1s | epoch 5: train_loss=0.1342 train_acc=95.45% val_acc=67.54% val_macroF1=0.6954 (39.7s)
+2026-09-20 21:41:23 | INFO    | +   205.1s | Best epoch 2 by accuracy (val acc 71.39%, val macro F1 0.7231)
+2026-09-20 21:41:23 | INFO    | +   205.1s | Checkpoint: /home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-213758_maf_siglip_pooled_s0/maf_siglip.pth (1042.3 MB)
+2026-09-20 21:41:23 | INFO    | +   205.6s | Reloaded best checkpoint for testing
+2026-09-20 21:41:23 | INFO    | +   205.6s | === TEST EVALUATION ===
+2026-09-20 21:41:28 | INFO    | +   210.2s | TEST acc=70.60%  weightedF1=0.7085  macroF1=0.7161  MMAE=0.7211945746936944
+2026-09-20 21:41:28 | INFO    | +   210.2s | Run finished with exit code 0 (210.2s wall clock)

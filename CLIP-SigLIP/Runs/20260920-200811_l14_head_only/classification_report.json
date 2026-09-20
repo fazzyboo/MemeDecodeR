@@ -1,0 +1,117 @@
+{
+  "accuracy": 0.695054945054945,
+  "weighted_precision": 0.7060937675396916,
+  "weighted_recall": 0.695054945054945,
+  "weighted_f1": 0.6949968719046781,
+  "macro_precision": 0.7174737509181967,
+  "macro_recall": 0.6966622188453174,
+  "macro_f1": 0.7019978651036334,
+  "micro_f1": 0.695054945054945,
+  "mmae": 0.73966471957229,
+  "per_class": {
+    "NoAg": {
+      "full_name": "non-aggressive",
+      "precision": 0.569620253164557,
+      "recall": 0.7417582417582418,
+      "f1-score": 0.6443914081145585,
+      "support": 182.0
+    },
+    "GAg": {
+      "full_name": "gendered aggression",
+      "precision": 0.7522123893805309,
+      "recall": 0.5902777777777778,
+      "f1-score": 0.6614785992217899,
+      "support": 144.0
+    },
+    "PAg": {
+      "full_name": "political aggression",
+      "precision": 0.7878787878787878,
+      "recall": 0.8125,
+      "f1-score": 0.8,
+      "support": 128.0
+    },
+    "RAg": {
+      "full_name": "religious aggression",
+      "precision": 0.8629032258064516,
+      "recall": 0.8106060606060606,
+      "f1-score": 0.8359375000000001,
+      "support": 132.0
+    },
+    "Oth": {
+      "full_name": "others",
+      "precision": 0.6147540983606558,
+      "recall": 0.528169014084507,
+      "f1-score": 0.5681818181818182,
+      "support": 142.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      135,
+      14,
+      11,
+      1,
+      21
+    ],
+    [
+      30,
+      85,
+      6,
+      5,
+      18
+    ],
+    [
+      11,
+      5,
+      104,
+      4,
+      4
+    ],
+    [
+      15,
+      2,
+      4,
+      107,
+      4
+    ],
+    [
+      46,
+      7,
+      7,
+      7,
+      75
+    ]
+  ],
+  "support_true": {
+    "NoAg": 182,
+    "GAg": 144,
+    "PAg": 128,
+    "RAg": 132,
+    "Oth": 142
+  },
+  "support_pred": {
+    "NoAg": 237,
+    "GAg": 113,
+    "PAg": 132,
+    "RAg": 124,
+    "Oth": 122
+  },
+  "split": "test",
+  "n_samples": 728,
+  "binary_aggression": {
+    "positive_class": "aggressive (any target)",
+    "accuracy": 0.7953296703296703,
+    "precision": 0.9042769857433809,
+    "recall": 0.8131868131868132,
+    "f1": 0.8563162970106076,
+    "macro_f1": 0.750353852562583,
+    "n_aggressive_true": 546,
+    "n_aggressive_pred": 491
+  },
+  "majority_baseline": {
+    "always_predicts": "non-aggressive",
+    "accuracy": 0.25,
+    "macro_f1": 0.08,
+    "weighted_f1": 0.09999999999999999
+  }
+}

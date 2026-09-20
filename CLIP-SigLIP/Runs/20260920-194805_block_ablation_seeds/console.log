@@ -1,0 +1,47 @@
+[log] ViT-B/32: 12 blocks. 8 child runs = 4 configs x 2 seed(s), sequentially (one GPU job at a time).
+[log] Reference points: head-only (floor) and all-blocks (ceiling).
+[log] [1/8] elapsed 0.0 min
+[log] --- head_only (seed 0) : launching child run 'ablseed_head_only_s0'
+[log]     head_only seed 0: test macroF1=0.6346 acc=62.09% (2,561 trainable, 148s)
+[log] [2/8] elapsed 2.5 min, eta 17.3 min
+[log] --- head_only (seed 1) : launching child run 'ablseed_head_only_s1'
+[log]     head_only seed 1: test macroF1=0.6367 acc=62.77% (2,561 trainable, 154s)
+[log] [3/8] elapsed 5.0 min, eta 15.1 min
+[log] --- b00 (seed 0) : launching child run 'ablseed_b00_s0'
+[log]     b00 seed 0: test macroF1=0.6413 acc=63.19% (101,697 trainable, 150s)
+[log] [4/8] elapsed 7.5 min, eta 12.5 min
+[log] --- b00 (seed 1) : launching child run 'ablseed_b00_s1'
+[log]     b00 seed 1: test macroF1=0.6280 acc=61.40% (101,697 trainable, 151s)
+[log] [5/8] elapsed 10.0 min, eta 10.0 min
+[log] --- b08 (seed 0) : launching child run 'ablseed_b08_s0'
+[log]     b08 seed 0: test macroF1=0.6600 acc=64.97% (101,697 trainable, 149s)
+[log] [6/8] elapsed 12.5 min, eta 7.5 min
+[log] --- b08 (seed 1) : launching child run 'ablseed_b08_s1'
+[log]     b08 seed 1: test macroF1=0.6490 acc=63.87% (101,697 trainable, 149s)
+[log] [7/8] elapsed 15.0 min, eta 5.0 min
+[log] --- all (seed 0) : launching child run 'ablseed_all_s0'
+[log]     all seed 0: test macroF1=0.6554 acc=64.56% (1,192,193 trainable, 150s)
+[log] [8/8] elapsed 17.5 min, eta 2.5 min
+[log] --- all (seed 1) : launching child run 'ablseed_all_s1'
+[log]     all seed 1: test macroF1=0.6593 acc=65.11% (1,192,193 trainable, 151s)
+
+AdaptFormer per-block ablation -- one block adapted at a time
+backbone ViT-B/32 | r=64 | 10 epochs | seeds 0,1 | head zeroshot
+
+block          trainable   macro F1     +/-      acc  weighted F1
+-----------------------------------------------------------------
+0                101,697     0.6346  0.0094   0.6229       0.6251
+8                101,697     0.6545  0.0078   0.6442       0.6453
+-----------------------------------------------------------------
+head only          2,561     0.6356  0.0015   0.6243       0.6260
+all blocks     1,192,193     0.6574  0.0028   0.6484       0.6488
+
+Findings
+  best single block : 8 (macro F1 0.6545)
+  worst single block: 0 (macro F1 0.6346)
+  spread across blocks: 0.0199 macro F1
+  best single block over head-only floor: +0.0189
+  best single block recovers 86.9% of the head-only -> all-blocks gain, using 1/2 of the adapter budget
+  mean seed-to-seed std: 0.0086 -- treat gaps smaller than about 0.0172 as noise
+
+[log] Sweep finished in 20.0 min

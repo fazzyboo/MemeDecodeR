@@ -1,0 +1,26 @@
+{
+  "total_params": 89041409,
+  "trainable_params": 1192193,
+  "frozen_params": 87849216,
+  "trainable_fraction": 0.013389,
+  "trainable_tensors": 50,
+  "trainable_names_sample": [
+    "visual.transformer.resblocks.0.adapter.down_proj.weight",
+    "visual.transformer.resblocks.0.adapter.down_proj.bias",
+    "visual.transformer.resblocks.0.adapter.up_proj.weight",
+    "visual.transformer.resblocks.0.adapter.up_proj.bias",
+    "visual.transformer.resblocks.1.adapter.down_proj.weight",
+    "visual.transformer.resblocks.1.adapter.down_proj.bias",
+    "visual.transformer.resblocks.1.adapter.up_proj.weight",
+    "visual.transformer.resblocks.1.adapter.up_proj.bias",
+    "visual.transformer.resblocks.2.adapter.down_proj.weight",
+    "visual.transformer.resblocks.2.adapter.down_proj.bias",
+    "visual.transformer.resblocks.2.adapter.up_proj.weight",
+    "visual.transformer.resblocks.2.adapter.up_proj.bias"
+  ],
+  "groups": {
+    "adapters": 1189632,
+    "head": 2561
+  },
+  "feature_dim": 512
+}

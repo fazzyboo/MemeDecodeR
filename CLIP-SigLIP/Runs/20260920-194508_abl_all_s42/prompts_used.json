@@ -1,0 +1,37 @@
+{
+  "non-aggressive": [
+    "a harmless funny internet meme",
+    "a wholesome joke meme with no insult",
+    "a neutral photo with caption text",
+    "a friendly lighthearted meme",
+    "a meme that does not attack anyone"
+  ],
+  "gendered aggression": [
+    "a sexist meme insulting a woman",
+    "a misogynistic meme attacking women",
+    "a meme mocking a woman's appearance or body",
+    "a meme attacking someone for their gender",
+    "a meme objectifying a woman"
+  ],
+  "political aggression": [
+    "a meme attacking a politician",
+    "a political meme insulting a political party",
+    "a meme mocking a government leader",
+    "an angry political protest meme",
+    "a meme criticising a prime minister or minister"
+  ],
+  "religious aggression": [
+    "a meme attacking a religion",
+    "a meme insulting religious people",
+    "a meme mocking a religious figure or symbol",
+    "a communal hate meme about religion",
+    "a meme showing a mosque temple or religious clothing with hostile text"
+  ],
+  "others": [
+    "an aggressive meme insulting a person",
+    "an offensive meme with abusive text",
+    "a meme attacking someone personally",
+    "an angry insulting meme with harsh words",
+    "a rude meme bullying an individual"
+  ]
+}

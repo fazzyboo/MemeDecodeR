@@ -1,0 +1,54 @@
+{
+  "files_path": "/home/raiyan/PR/Bengali-Aggression-Memes/Dataset/",
+  "images_path": "/home/raiyan/PR/Bengali-Aggression-Memes/Dataset/Img",
+  "max_len": 70,
+  "batch_size": 16,
+  "build_time_s": 3.73,
+  "splits": {
+    "train": {
+      "csv": "training_set.csv",
+      "n_samples": 3393,
+      "class_counts": {
+        "non-aggressive": 846,
+        "gendered aggression": 672,
+        "others": 660,
+        "religious aggression": 618,
+        "political aggression": 597
+      },
+      "caption_chars_mean": 83.21013852048335,
+      "caption_chars_max": 398,
+      "n_batches": 213,
+      "loader_batch_size": 16
+    },
+    "validation": {
+      "csv": "validation_set.csv",
+      "n_samples": 727,
+      "class_counts": {
+        "non-aggressive": 181,
+        "gendered aggression": 144,
+        "others": 141,
+        "religious aggression": 133,
+        "political aggression": 128
+      },
+      "caption_chars_mean": 80.96011004126548,
+      "caption_chars_max": 362,
+      "n_batches": 46,
+      "loader_batch_size": 16
+    },
+    "test": {
+      "csv": "testing_set.csv",
+      "n_samples": 728,
+      "class_counts": {
+        "non-aggressive": 182,
+        "gendered aggression": 144,
+        "others": 142,
+        "religious aggression": 132,
+        "political aggression": 128
+      },
+      "caption_chars_mean": 85.64148351648352,
+      "caption_chars_max": 611,
+      "n_batches": 182,
+      "loader_batch_size": 4
+    }
+  }
+}

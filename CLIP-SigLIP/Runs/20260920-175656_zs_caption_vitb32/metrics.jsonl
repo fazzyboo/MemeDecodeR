@@ -1,0 +1,4 @@
+{"t": 2.467, "kind": "config", "approach": "CLIP zero-shot (no training, no BanglaBERT, no checkpoint)", "backbone": "ViT-B/32", "splits": ["test"], "mode": "caption", "alpha": 0.5, "alpha_sweep": false, "prompt_file": null, "dataset_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Dataset", "batch_size": 64, "max_samples": 0, "seed": 42, "device": "cuda:0", "run_dir": "/home/raiyan/PR/Bengali-Aggression-Memes/Runs/20260920-175656_zs_caption_vitb32", "command": "/home/raiyan/anaconda3/envs/memedecoder/bin/python clip_zeroshot.py --mode caption --split test --run_name zs_caption_vitb32"}
+{"t": 5.609, "kind": "model", "backbone": "ViT-B/32", "params": 151277313, "trainable": 0}
+{"t": 6.193, "kind": "zeroshot_split", "split": "test", "mode": "caption", "alpha": 0.5, "accuracy": 0.25137362637362637, "macro_f1": 0.0901442082928759, "weighted_f1": 0.10984438656247912}
+{"t": 6.193, "kind": "run_end", "exit_code": 0, "timings": {"wall_clock_s": 6.19}}
