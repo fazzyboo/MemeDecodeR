@@ -1,0 +1,126 @@
+{
+  "accuracy": 0.5041208791208791,
+  "weighted_f1": 0.5060105056547901,
+  "macro_f1": 0.5120653932469805,
+  "weighted_precision": 0.5094156961477213,
+  "weighted_recall": 0.5041208791208791,
+  "mmae": 1.0852855258004905,
+  "per_class": {
+    "NoAg": {
+      "precision": 0.44329896907216493,
+      "recall": 0.4725274725274725,
+      "f1-score": 0.4574468085106383,
+      "support": 182.0
+    },
+    "GAg": {
+      "precision": 0.5396825396825397,
+      "recall": 0.4722222222222222,
+      "f1-score": 0.5037037037037037,
+      "support": 144.0
+    },
+    "PAg": {
+      "precision": 0.5655737704918032,
+      "recall": 0.5390625,
+      "f1-score": 0.552,
+      "support": 128.0
+    },
+    "RAg": {
+      "precision": 0.6793893129770993,
+      "recall": 0.6742424242424242,
+      "f1-score": 0.6768060836501901,
+      "support": 132.0
+    },
+    "Oth": {
+      "precision": 0.3548387096774194,
+      "recall": 0.3873239436619718,
+      "f1-score": 0.37037037037037035,
+      "support": 142.0
+    },
+    "accuracy": 0.5041208791208791,
+    "macro avg": {
+      "precision": 0.5165566603802053,
+      "recall": 0.5090757125308182,
+      "f1-score": 0.5120653932469805,
+      "support": 728.0
+    },
+    "weighted avg": {
+      "precision": 0.5094156961477213,
+      "recall": 0.5041208791208791,
+      "f1-score": 0.5060105056547901,
+      "support": 728.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      86,
+      23,
+      17,
+      10,
+      46
+    ],
+    [
+      39,
+      68,
+      11,
+      5,
+      21
+    ],
+    [
+      19,
+      11,
+      69,
+      10,
+      19
+    ],
+    [
+      17,
+      5,
+      7,
+      89,
+      14
+    ],
+    [
+      33,
+      19,
+      18,
+      17,
+      55
+    ]
+  ],
+  "target_names": [
+    "NoAg",
+    "GAg",
+    "PAg",
+    "RAg",
+    "Oth"
+  ],
+  "run_name": "mulad_cnn_vgg19_fasttext",
+  "framework": "MuLAD",
+  "modality": "multimodal",
+  "text_model": "cnn",
+  "backbone": "vgg19",
+  "embedding": "fasttext",
+  "best_val_accuracy": 0.530949105914718,
+  "best_epoch": 6,
+  "degenerate": false,
+  "runtime_s": 16.1,
+  "hyperparameters": {
+    "max_len": 130,
+    "num_words": 8000,
+    "emb_dim": 300,
+    "batch_size": 32,
+    "epochs": 30,
+    "lr": 0.001,
+    "patience": 8,
+    "monitor": "accuracy",
+    "seed": 42,
+    "cnn_filters": 128,
+    "kernel_size": 5,
+    "lstm_units": 100,
+    "text_dense": 32,
+    "visual_pool": "auto",
+    "visual_dense": 32,
+    "dropout": 0.3,
+    "subset": 0
+  }
+}

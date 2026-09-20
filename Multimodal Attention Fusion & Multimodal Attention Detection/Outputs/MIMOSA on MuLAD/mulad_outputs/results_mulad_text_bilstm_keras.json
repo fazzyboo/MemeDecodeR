@@ -1,0 +1,126 @@
+{
+  "accuracy": 0.5,
+  "weighted_f1": 0.503786503457664,
+  "macro_f1": 0.5115825860226393,
+  "weighted_precision": 0.5122066556064778,
+  "weighted_recall": 0.5,
+  "mmae": 1.0672643793022314,
+  "per_class": {
+    "NoAg": {
+      "precision": 0.47305389221556887,
+      "recall": 0.4340659340659341,
+      "f1-score": 0.45272206303724927,
+      "support": 182.0
+    },
+    "GAg": {
+      "precision": 0.40437158469945356,
+      "recall": 0.5138888888888888,
+      "f1-score": 0.4525993883792049,
+      "support": 144.0
+    },
+    "PAg": {
+      "precision": 0.6311475409836066,
+      "recall": 0.6015625,
+      "f1-score": 0.616,
+      "support": 128.0
+    },
+    "RAg": {
+      "precision": 0.7433628318584071,
+      "recall": 0.6363636363636364,
+      "f1-score": 0.6857142857142857,
+      "support": 132.0
+    },
+    "Oth": {
+      "precision": 0.34965034965034963,
+      "recall": 0.352112676056338,
+      "f1-score": 0.3508771929824561,
+      "support": 142.0
+    },
+    "accuracy": 0.5,
+    "macro avg": {
+      "precision": 0.520317239881477,
+      "recall": 0.5075987270749595,
+      "f1-score": 0.5115825860226393,
+      "support": 728.0
+    },
+    "weighted avg": {
+      "precision": 0.5122066556064778,
+      "recall": 0.5,
+      "f1-score": 0.503786503457664,
+      "support": 728.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      79,
+      53,
+      11,
+      7,
+      32
+    ],
+    [
+      31,
+      74,
+      4,
+      7,
+      28
+    ],
+    [
+      14,
+      12,
+      77,
+      7,
+      18
+    ],
+    [
+      7,
+      14,
+      12,
+      84,
+      15
+    ],
+    [
+      36,
+      30,
+      18,
+      8,
+      50
+    ]
+  ],
+  "target_names": [
+    "NoAg",
+    "GAg",
+    "PAg",
+    "RAg",
+    "Oth"
+  ],
+  "run_name": "mulad_text_bilstm_keras",
+  "framework": "MuLAD",
+  "modality": "text",
+  "text_model": "bilstm",
+  "backbone": null,
+  "embedding": "keras",
+  "best_val_accuracy": 0.5763411279229711,
+  "best_epoch": 30,
+  "degenerate": false,
+  "runtime_s": 14.9,
+  "hyperparameters": {
+    "max_len": 130,
+    "num_words": 8000,
+    "emb_dim": 64,
+    "batch_size": 32,
+    "epochs": 30,
+    "lr": 0.001,
+    "patience": 8,
+    "monitor": "accuracy",
+    "seed": 42,
+    "cnn_filters": 128,
+    "kernel_size": 5,
+    "lstm_units": 100,
+    "text_dense": 32,
+    "visual_pool": "auto",
+    "visual_dense": 32,
+    "dropout": 0.3,
+    "subset": 0
+  }
+}

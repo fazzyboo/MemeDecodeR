@@ -1,0 +1,126 @@
+{
+  "accuracy": 0.5480769230769231,
+  "weighted_f1": 0.5473442526646867,
+  "macro_f1": 0.5541185498556849,
+  "weighted_precision": 0.5509492319707533,
+  "weighted_recall": 0.5480769230769231,
+  "mmae": 0.9882601724371091,
+  "per_class": {
+    "NoAg": {
+      "precision": 0.48205128205128206,
+      "recall": 0.5164835164835165,
+      "f1-score": 0.4986737400530504,
+      "support": 182.0
+    },
+    "GAg": {
+      "precision": 0.5167785234899329,
+      "recall": 0.5347222222222222,
+      "f1-score": 0.5255972696245734,
+      "support": 144.0
+    },
+    "PAg": {
+      "precision": 0.69,
+      "recall": 0.5390625,
+      "f1-score": 0.6052631578947368,
+      "support": 128.0
+    },
+    "RAg": {
+      "precision": 0.7123287671232876,
+      "recall": 0.7878787878787878,
+      "f1-score": 0.7482014388489209,
+      "support": 132.0
+    },
+    "Oth": {
+      "precision": 0.39855072463768115,
+      "recall": 0.3873239436619718,
+      "f1-score": 0.39285714285714285,
+      "support": 142.0
+    },
+    "accuracy": 0.5480769230769231,
+    "macro avg": {
+      "precision": 0.5599418594604367,
+      "recall": 0.5530941940492997,
+      "f1-score": 0.5541185498556849,
+      "support": 728.0
+    },
+    "weighted avg": {
+      "precision": 0.5509492319707533,
+      "recall": 0.5480769230769231,
+      "f1-score": 0.5473442526646867,
+      "support": 728.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      94,
+      31,
+      11,
+      7,
+      39
+    ],
+    [
+      39,
+      77,
+      6,
+      4,
+      18
+    ],
+    [
+      18,
+      8,
+      69,
+      13,
+      20
+    ],
+    [
+      7,
+      12,
+      3,
+      104,
+      6
+    ],
+    [
+      37,
+      21,
+      11,
+      18,
+      55
+    ]
+  ],
+  "target_names": [
+    "NoAg",
+    "GAg",
+    "PAg",
+    "RAg",
+    "Oth"
+  ],
+  "run_name": "mulad_bilstm_vgg19_keras",
+  "framework": "MuLAD",
+  "modality": "multimodal",
+  "text_model": "bilstm",
+  "backbone": "vgg19",
+  "embedding": "keras",
+  "best_val_accuracy": 0.6011004126547456,
+  "best_epoch": 24,
+  "degenerate": false,
+  "runtime_s": 33.7,
+  "hyperparameters": {
+    "max_len": 130,
+    "num_words": 8000,
+    "emb_dim": 64,
+    "batch_size": 32,
+    "epochs": 30,
+    "lr": 0.001,
+    "patience": 8,
+    "monitor": "accuracy",
+    "seed": 42,
+    "cnn_filters": 128,
+    "kernel_size": 5,
+    "lstm_units": 100,
+    "text_dense": 32,
+    "visual_pool": "auto",
+    "visual_dense": 32,
+    "dropout": 0.3,
+    "subset": 0
+  }
+}

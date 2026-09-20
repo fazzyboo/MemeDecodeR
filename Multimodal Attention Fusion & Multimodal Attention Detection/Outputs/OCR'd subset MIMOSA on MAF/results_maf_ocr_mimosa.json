@@ -1,0 +1,112 @@
+{
+  "accuracy": 0.7019230769230769,
+  "weighted_f1": 0.69877219160787,
+  "macro_f1": 0.7054150498097511,
+  "weighted_precision": 0.703331155970293,
+  "weighted_recall": 0.7019230769230769,
+  "mmae": 0.7305720077066908,
+  "per_class": {
+    "NoAg": {
+      "precision": 0.5972850678733032,
+      "recall": 0.7252747252747253,
+      "f1-score": 0.6550868486352357,
+      "support": 182.0
+    },
+    "GAg": {
+      "precision": 0.7,
+      "recall": 0.7291666666666666,
+      "f1-score": 0.7142857142857143,
+      "support": 144.0
+    },
+    "PAg": {
+      "precision": 0.825,
+      "recall": 0.7734375,
+      "f1-score": 0.7983870967741935,
+      "support": 128.0
+    },
+    "RAg": {
+      "precision": 0.8625954198473282,
+      "recall": 0.8560606060606061,
+      "f1-score": 0.8593155893536122,
+      "support": 132.0
+    },
+    "Oth": {
+      "precision": 0.5849056603773585,
+      "recall": 0.43661971830985913,
+      "f1-score": 0.5,
+      "support": 142.0
+    },
+    "accuracy": 0.7019230769230769,
+    "macro avg": {
+      "precision": 0.713957229619598,
+      "recall": 0.7041118432623714,
+      "f1-score": 0.7054150498097511,
+      "support": 728.0
+    },
+    "weighted avg": {
+      "precision": 0.703331155970293,
+      "recall": 0.7019230769230769,
+      "f1-score": 0.69877219160787,
+      "support": 728.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      132,
+      22,
+      3,
+      1,
+      24
+    ],
+    [
+      22,
+      105,
+      3,
+      6,
+      8
+    ],
+    [
+      11,
+      5,
+      99,
+      4,
+      9
+    ],
+    [
+      10,
+      2,
+      4,
+      113,
+      3
+    ],
+    [
+      46,
+      16,
+      11,
+      7,
+      62
+    ]
+  ],
+  "target_names": [
+    "NoAg",
+    "GAg",
+    "PAg",
+    "RAg",
+    "Oth"
+  ],
+  "run_name": "maf_ocr_mimosa",
+  "framework": "MAF",
+  "checkpoint": "maf_model_maf_ocr_mimosa.pth",
+  "hyperparameters": {
+    "max_len": 70,
+    "batch_size": 16,
+    "heads": 16,
+    "epochs": 5,
+    "lr": 5e-05,
+    "seed": 42,
+    "attn_variant": "code",
+    "fix_scheduler": true,
+    "subset": 0,
+    "captions_suffix": "_ocr"
+  }
+}

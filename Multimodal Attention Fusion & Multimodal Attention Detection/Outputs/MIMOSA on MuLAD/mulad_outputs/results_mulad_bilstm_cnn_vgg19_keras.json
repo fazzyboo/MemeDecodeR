@@ -1,0 +1,126 @@
+{
+  "accuracy": 0.5137362637362637,
+  "weighted_f1": 0.5163619457137204,
+  "macro_f1": 0.5243797981046188,
+  "weighted_precision": 0.524721885062586,
+  "weighted_recall": 0.5137362637362637,
+  "mmae": 1.0703834653218456,
+  "per_class": {
+    "NoAg": {
+      "precision": 0.4602272727272727,
+      "recall": 0.44505494505494503,
+      "f1-score": 0.45251396648044695,
+      "support": 182.0
+    },
+    "GAg": {
+      "precision": 0.45348837209302323,
+      "recall": 0.5416666666666666,
+      "f1-score": 0.4936708860759494,
+      "support": 144.0
+    },
+    "PAg": {
+      "precision": 0.6804123711340206,
+      "recall": 0.515625,
+      "f1-score": 0.5866666666666667,
+      "support": 128.0
+    },
+    "RAg": {
+      "precision": 0.7272727272727273,
+      "recall": 0.7272727272727273,
+      "f1-score": 0.7272727272727273,
+      "support": 132.0
+    },
+    "Oth": {
+      "precision": 0.3509933774834437,
+      "recall": 0.3732394366197183,
+      "f1-score": 0.36177474402730375,
+      "support": 142.0
+    },
+    "accuracy": 0.5137362637362637,
+    "macro avg": {
+      "precision": 0.5344788241420975,
+      "recall": 0.5205717551228115,
+      "f1-score": 0.5243797981046188,
+      "support": 728.0
+    },
+    "weighted avg": {
+      "precision": 0.524721885062586,
+      "recall": 0.5137362637362637,
+      "f1-score": 0.5163619457137204,
+      "support": 728.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      81,
+      44,
+      10,
+      6,
+      41
+    ],
+    [
+      29,
+      78,
+      8,
+      3,
+      26
+    ],
+    [
+      18,
+      12,
+      66,
+      14,
+      18
+    ],
+    [
+      10,
+      10,
+      3,
+      96,
+      13
+    ],
+    [
+      38,
+      28,
+      10,
+      13,
+      53
+    ]
+  ],
+  "target_names": [
+    "NoAg",
+    "GAg",
+    "PAg",
+    "RAg",
+    "Oth"
+  ],
+  "run_name": "mulad_bilstm_cnn_vgg19_keras",
+  "framework": "MuLAD",
+  "modality": "multimodal",
+  "text_model": "bilstm_cnn",
+  "backbone": "vgg19",
+  "embedding": "keras",
+  "best_val_accuracy": 0.5763411279229711,
+  "best_epoch": 15,
+  "degenerate": false,
+  "runtime_s": 27.2,
+  "hyperparameters": {
+    "max_len": 130,
+    "num_words": 8000,
+    "emb_dim": 64,
+    "batch_size": 32,
+    "epochs": 30,
+    "lr": 0.001,
+    "patience": 8,
+    "monitor": "accuracy",
+    "seed": 42,
+    "cnn_filters": 128,
+    "kernel_size": 5,
+    "lstm_units": 100,
+    "text_dense": 32,
+    "visual_pool": "auto",
+    "visual_dense": 32,
+    "dropout": 0.3,
+    "subset": 0
+  }
+}

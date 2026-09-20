@@ -1,0 +1,42 @@
+{
+  "caption_quality": {
+    "hand": {
+      "n_words": 15.239010989010989,
+      "bengali_char_share": 0.9662337638109603,
+      "latin_char_share": 0.0,
+      "digit_char_share": 0.006405380772753766,
+      "non_bengali_token_share": 0.029212297049813606,
+      "is_empty": 0.0
+    },
+    "ocr": {
+      "n_words": 27.935,
+      "bengali_char_share": 0.46150380027806526,
+      "latin_char_share": 0.45298504803942086,
+      "digit_char_share": 0.07421592498909332,
+      "non_bengali_token_share": 0.526912443045871,
+      "is_empty": 0.0
+    }
+  },
+  "runs": [
+    {
+      "label": "MAF\nmachine OCR captions\n4-way subset",
+      "weighted_f1": 0.5634715598291774,
+      "sub": "maf_full"
+    },
+    {
+      "label": "MAF\nhand-corrected captions\n5-way MIMOSA",
+      "weighted_f1": 0.7179395312908375,
+      "sub": "maf_fixed_sched"
+    },
+    {
+      "label": "MuLAD\nhand-corrected captions\n5-way MIMOSA",
+      "weighted_f1": 0.5555560761812873,
+      "sub": "mulad_cnn_vgg16_keras"
+    }
+  ],
+  "confounds": {
+    "class_count": "OCR run is 4-way (chance 25%), hand runs are 5-way (chance 20%) - favours the OCR run, so it works against the conclusion",
+    "training_size": "OCR run trained on 2,390 memes vs 3,393 - favours the hand run",
+    "resolution": "Run OCR over the same 4,848 MIMOSA memes for a controlled pair"
+  }
+}

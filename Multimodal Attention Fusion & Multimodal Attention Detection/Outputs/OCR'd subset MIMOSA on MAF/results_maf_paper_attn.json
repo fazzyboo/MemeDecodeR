@@ -1,0 +1,112 @@
+{
+  "accuracy": 0.7101648351648352,
+  "weighted_f1": 0.7113304890286885,
+  "macro_f1": 0.7203164657031502,
+  "weighted_precision": 0.718742503166922,
+  "weighted_recall": 0.7101648351648352,
+  "mmae": 0.7241483306404082,
+  "per_class": {
+    "NoAg": {
+      "precision": 0.5953488372093023,
+      "recall": 0.7032967032967034,
+      "f1-score": 0.6448362720403022,
+      "support": 182.0
+    },
+    "GAg": {
+      "precision": 0.7522123893805309,
+      "recall": 0.5902777777777778,
+      "f1-score": 0.6614785992217899,
+      "support": 144.0
+    },
+    "PAg": {
+      "precision": 0.8455284552845529,
+      "recall": 0.8125,
+      "f1-score": 0.8286852589641435,
+      "support": 128.0
+    },
+    "RAg": {
+      "precision": 0.9090909090909091,
+      "recall": 0.9090909090909091,
+      "f1-score": 0.9090909090909091,
+      "support": 132.0
+    },
+    "Oth": {
+      "precision": 0.5517241379310345,
+      "recall": 0.5633802816901409,
+      "f1-score": 0.5574912891986062,
+      "support": 142.0
+    },
+    "accuracy": 0.7101648351648352,
+    "macro avg": {
+      "precision": 0.730780945779266,
+      "recall": 0.7157091343711063,
+      "f1-score": 0.7203164657031502,
+      "support": 728.0
+    },
+    "weighted avg": {
+      "precision": 0.718742503166922,
+      "recall": 0.7101648351648352,
+      "f1-score": 0.7113304890286885,
+      "support": 728.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      128,
+      14,
+      7,
+      4,
+      29
+    ],
+    [
+      30,
+      85,
+      2,
+      3,
+      24
+    ],
+    [
+      14,
+      1,
+      104,
+      0,
+      9
+    ],
+    [
+      6,
+      0,
+      3,
+      120,
+      3
+    ],
+    [
+      37,
+      13,
+      7,
+      5,
+      80
+    ]
+  ],
+  "target_names": [
+    "NoAg",
+    "GAg",
+    "PAg",
+    "RAg",
+    "Oth"
+  ],
+  "run_name": "maf_paper_attn",
+  "framework": "MAF",
+  "checkpoint": "maf_model_maf_paper_attn.pth",
+  "hyperparameters": {
+    "max_len": 70,
+    "batch_size": 16,
+    "heads": 16,
+    "epochs": 5,
+    "lr": 5e-05,
+    "seed": 42,
+    "attn_variant": "paper",
+    "fix_scheduler": false,
+    "subset": 0,
+    "captions_suffix": ""
+  }
+}
