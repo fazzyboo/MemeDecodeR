@@ -5,8 +5,7 @@ Reports the same metric set as the paper (Table 4): accuracy, weighted F1, macro
 MMAE (macro-averaged mean absolute error), plus the per-class classification report.
 
 Changes from the original:
-  1. The class count comes from the data (labels.py), not a hardcoded list, and the
-     metric code is shared with MuLAD via metrics.py so the two are scored alike.
+  1. target_names is four classes, not five - our data has no "others" category.
   2. The hyperparameter defaults follow the paper's Appendix A (batch size 4, 20 epochs,
      lr 5e-5 for MAF) rather than the repository defaults (batch 16, 5 epochs), which do
      not match the published setup.
@@ -28,14 +27,28 @@ import time
 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    confusion_matrix,
+    f1_score,
+    precision_score,
+    recall_score,
+)
 
 import dataset as d
 import evaluation as e
-import metrics as M
+
+try:
+    from imblearn.metrics import macro_averaged_mean_absolute_error
+except ImportError:  # imbalanced-learn is optional; MMAE is then computed directly
+    macro_averaged_mean_absolute_error = None
 
 import warnings
 
 warnings.filterwarnings("ignore")
+
+TARGET_NAMES = d.TARGET_NAMES
 
 
 def set_seed(seed):
@@ -48,6 +61,30 @@ def set_seed(seed):
         torch.cuda.manual_seed_all(seed)
     except ImportError:
         pass
+
+
+def mmae(true, pred):
+    """Macro-averaged mean absolute error (Baccianella et al., 2009).
+
+    Averages the mean absolute ordinal error within each true class, so a class with few
+    samples counts as much as a large one.
+    """
+    if macro_averaged_mean_absolute_error is not None:
+        return float(macro_averaged_mean_absolute_error(true, pred))
+    true = np.asarray(true, dtype=float)
+    pred = np.asarray(pred, dtype=float)
+    per_class = [np.abs(pred[true == c] - true[true == c]).mean() for c in np.unique(true)]
+    return float(np.mean(per_class))
+
+
+def print_metrices(true, pred, labels):
+    print(classification_report(true, pred, labels=labels, target_names=TARGET_NAMES, digits=3))
+    print("Accuracy : ", accuracy_score(true, pred))
+    print("Precison : ", precision_score(true, pred, average="weighted"))
+    print("Recall : ", recall_score(true, pred, average="weighted"))
+    print("F1 : ", f1_score(true, pred, average="weighted"))
+    print("Macro F1 : ", f1_score(true, pred, average="macro"))
+    print("MMAE: ", mmae(true, pred))
 
 
 def main(args):
@@ -73,13 +110,7 @@ def main(args):
         args.batch,
         test_batch_size=args.batch,
         subset=args.subset,
-        suffix=args.captions_suffix,
     )
-
-    # Resolved by load_dataset() from the CSVs: five-way for full MIMOSA, four-way for a
-    # subset without "others".
-    target_names = d.TARGET_NAMES
-    labels = list(range(d.NUM_CLASSES))
 
     # One checkpoint file per run. A single shared maf_model.pth (as in the original repo)
     # lets consecutive runs in one notebook silently overwrite each other's models.
@@ -105,21 +136,31 @@ def main(args):
 
     actual = [int(x) for x in actual]
     pred = [int(x) for x in pred]
+    labels = list(range(d.NUM_CLASSES))
 
     print("Classification Report :")
-    M.print_metrices(actual, pred, labels, target_names)
+    print_metrices(actual, pred, labels)
 
     print()
     print("Confusion matrix (rows = true, cols = predicted)")
-    results = M.summarise(actual, pred, target_names)
-    print(pd.DataFrame(results["confusion_matrix"],
-                       index=target_names, columns=target_names).to_string())
+    cm = confusion_matrix(actual, pred, labels=labels)
+    print(pd.DataFrame(cm, index=TARGET_NAMES, columns=TARGET_NAMES).to_string())
 
     # Persist results
-    results.update({
+    results = {
         "run_name": tag,
-        "framework": "MAF",
         "checkpoint": checkpoint_name,
+        "accuracy": accuracy_score(actual, pred),
+        "weighted_f1": f1_score(actual, pred, average="weighted"),
+        "macro_f1": f1_score(actual, pred, average="macro"),
+        "weighted_precision": precision_score(actual, pred, average="weighted"),
+        "weighted_recall": recall_score(actual, pred, average="weighted"),
+        "mmae": mmae(actual, pred),
+        "per_class": classification_report(
+            actual, pred, labels=labels, target_names=TARGET_NAMES, digits=3, output_dict=True
+        ),
+        "confusion_matrix": cm.tolist(),
+        "target_names": TARGET_NAMES,
         "hyperparameters": {
             "max_len": args.maximum_length,
             "batch_size": args.batch,
@@ -130,10 +171,8 @@ def main(args):
             "attn_variant": args.attn_variant,
             "fix_scheduler": args.fix_scheduler,
             "subset": args.subset,
-            "captions_suffix": args.captions_suffix,
         },
-    })
-
+    }
     with open(os.path.join(outputs_dir, "results_{}.json".format(tag)), "w", encoding="utf-8") as fh:
         json.dump(results, fh, indent=2, ensure_ascii=False)
 
@@ -142,7 +181,7 @@ def main(args):
     preds_frame = test_loader.dataset.data.copy()
     preds_frame["true_id"] = actual
     preds_frame["pred_id"] = pred
-    preds_frame["pred_label"] = [target_names[p] for p in pred]
+    preds_frame["pred_label"] = [TARGET_NAMES[p] for p in pred]
     preds_frame.to_csv(
         os.path.join(outputs_dir, "predictions_{}.csv".format(tag)), index=False, encoding="utf-8"
     )
@@ -178,8 +217,6 @@ if __name__ == "__main__":
                         help="step the LR scheduler per batch instead of per epoch")
     parser.add_argument("--subset", type=int, default=0,
                         help="use only N rows per split - for a fast end-to-end smoke test")
-    parser.add_argument("--captions_suffix", type=str, default="",
-                        help="caption variant to train on, e.g. _ocr for training_set_ocr.csv")
 
     args = parser.parse_args()
     main(args)

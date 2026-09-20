@@ -3,9 +3,9 @@ Data loading - port of the original MIMOSA Scripts/dataset.py.
 
 Changes from the original, all of them forced by our dataset or by running without a GPU:
 
-  1. The class count is resolved from the split CSVs instead of being hardcoded, so the
-     same code runs the five-way MIMOSA corpus and any four-way subset of it. Integer
-     codes keep the paper's ordering (NoAg=0..Oth=4) so MMAE stays ordinal. See labels.py.
+  1. Five-way -> four-way labels. Our data has no "others" (Oth) class, so that entry is
+     removed from the label map. The integer codes of the four shared classes keep the
+     paper's values (NoAg=0, GAg=1, PAg=2, RAg=3) so MMAE stays an ordinal comparison.
   2. Captions read from CSV can be empty (the OCR found no text). Those arrive as NaN
      from pandas and would crash the tokenizer, so they are coerced to "".
   3. Image.open(...).convert("RGB") - the original omits the conversion, which breaks
@@ -26,28 +26,35 @@ from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 from transformers import AutoTokenizer
 
-import labels as L
-
 # Set the device to GPU if available, else use CPU
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("Device:", device)
 
 start_time = time.time()
 
-# Label handling lives in labels.py so MAF and MuLAD encode classes identically.
-# NUM_CLASSES and TARGET_NAMES below are defaults for the full five-way MIMOSA corpus;
-# load_dataset() re-resolves both from the CSVs actually loaded and rewrites them, so a
-# four-way subset (no "others" class) still works without edits. Read them AFTER calling
-# load_dataset(), never at import time.
-LABEL_MAP = L.LABEL_MAP
-NUM_CLASSES = len(L.ALL_TARGET_NAMES)
-TARGET_NAMES = list(L.ALL_TARGET_NAMES)
+# Four-way label map. The paper's fifth class ("others": 4) has no counterpart here.
+LABEL_MAP = {
+    "non-aggressive": 0,
+    "gendered aggression": 1,
+    "political aggression": 2,
+    "religious aggression": 3,
+}
+NUM_CLASSES = len(LABEL_MAP)
+TARGET_NAMES = ["NoAg", "GAg", "PAg", "RAg"]
 
-_encode = L.encode
+
+def _encode(frame, name):
+    frame = frame.copy()
+    frame["Captions"] = frame["Captions"].fillna("").astype(str)
+    frame["Label"] = frame["Label"].map(LABEL_MAP)
+    if frame["Label"].isna().any():
+        bad = frame.loc[frame["Label"].isna()].head()
+        raise ValueError("Unmapped label(s) in {}:\n{}".format(name, bad))
+    frame["Label"] = frame["Label"].astype(int)
+    return frame.reset_index(drop=True)
 
 
-def load_dataset(files_path, memes_path, max_len, batch_size, test_batch_size=4, subset=0,
-                 suffix=""):
+def load_dataset(files_path, memes_path, max_len, batch_size, test_batch_size=4, subset=0):
 
     print("Fetching Dataset... ")
     print("-----------------------------")
@@ -55,17 +62,9 @@ def load_dataset(files_path, memes_path, max_len, batch_size, test_batch_size=4,
     print("Batch Size: ", batch_size)
 
     # join the paths
-    # `suffix` selects a caption variant that shares the images, labels and split
-    # membership - e.g. "_ocr" reads training_set_ocr.csv. That makes the OCR-versus-gold
-    # comparison a matched pair: only the Captions column differs.
-    train_file = os.path.join(files_path, "training_set{}.csv".format(suffix))
-    valid_file = os.path.join(files_path, "validation_set{}.csv".format(suffix))
-    test_file = os.path.join(files_path, "testing_set{}.csv".format(suffix))
-    for path in (train_file, valid_file, test_file):
-        if not os.path.isfile(path):
-            raise SystemExit("Missing {} - check --captions_suffix".format(path))
-    if suffix:
-        print("Caption variant:", suffix)
+    train_file = os.path.join(files_path, "training_set.csv")
+    valid_file = os.path.join(files_path, "validation_set.csv")
+    test_file = os.path.join(files_path, "testing_set.csv")
 
     # dataset
     train_data = pd.read_csv(train_file)
@@ -76,12 +75,6 @@ def load_dataset(files_path, memes_path, max_len, batch_size, test_batch_size=4,
     train_data = _encode(train_data, "training_set.csv")
     valid_data = _encode(valid_data, "validation_set.csv")
     test_data = _encode(test_data, "testing_set.csv")
-
-    # Resolve the class count from the data rather than assuming it. The full MIMOSA
-    # corpus is five-way; a subset without "others" is four-way. Both are handled.
-    global NUM_CLASSES, TARGET_NAMES
-    NUM_CLASSES, TARGET_NAMES = L.resolve_classes([train_data, valid_data, test_data])
-    print("Classes:", NUM_CLASSES, TARGET_NAMES)
 
     if subset:
         # Smoke-test mode: take a stratified-ish head of each split so every class is
