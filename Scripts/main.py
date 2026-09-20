@@ -70,7 +70,11 @@ def main(args):
                               saved_models_dir,
                               args.n_heads,
                               args.epochs, 
-                              args.lr_rate)
+                              args.lr_rate,
+                              args.adapter_dim,
+                              args.freeze_bert,
+                              args.fix_attn,
+                              args.head_lr)
 
     # #  evaluation
     print(f"Classification Report :")
@@ -100,5 +104,20 @@ if __name__ == "__main__":
                      
 
     
+    parser.add_argument('--adapter_dim', dest='adapter_dim', type=int, default = 0,
+                        help='bottleneck size of AdaptFormer adapters in CLIP (0 = disabled)')
+
+    parser.add_argument('--freeze_bert', action='store_true',
+                        help='freeze BanglaBERT (adapters are added to it when --adapter_dim > 0)')
+    parser.add_argument('--fix_attn', action='store_true',
+                        help='use the caption tokens as attention Value (with padding mask)')
+    parser.add_argument('--head_lr', type=float, default=None,
+                        help='learning rate for new modules (adapters/fusion/classifier); default = --lrate')
+    parser.add_argument('--seed', type=int, default=None, help='random seed')
+
     args = parser.parse_args()
+    if args.seed is not None:
+        import torch
+        random.seed(args.seed); np.random.seed(args.seed)
+        torch.manual_seed(args.seed); torch.cuda.manual_seed_all(args.seed)
     main(args)

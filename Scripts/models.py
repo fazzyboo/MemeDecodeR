@@ -22,8 +22,8 @@ class MultiheadAttention(nn.Module):
         super(MultiheadAttention, self).__init__()
         self.attention = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
 
-    def forward(self, query, key, value, mask=None):
-        output, _ = self.attention(query, key, value, attn_mask=mask)
+    def forward(self, query, key, value, mask=None, key_padding_mask=None):
+        output, _ = self.attention(query, key, value, attn_mask=mask, key_padding_mask=key_padding_mask)
         return output
 
 
@@ -41,11 +41,53 @@ for param in clip_model.parameters():
     param.requires_grad = False   
 
 
+# AdaptFormer-style parallel adapter: down-project -> ReLU -> up-project, scaled
+class ParallelAdapter(nn.Module):
+    def __init__(self, dim, bottleneck, scale=0.1):
+        super().__init__()
+        self.down = nn.Linear(dim, bottleneck)
+        self.up = nn.Linear(bottleneck, dim)
+        self.scale = scale
+        # zero-init the up projection so training starts from the pretrained CLIP behaviour
+        nn.init.zeros_(self.up.weight)
+        nn.init.zeros_(self.up.bias)
+
+    def forward(self, x):
+        return self.up(F.relu(self.down(x))) * self.scale
+
+
+def add_clip_adapters(visual, bottleneck):
+    """Insert a trainable parallel adapter beside the MLP of every (frozen) CLIP ViT block."""
+    for blk in visual.transformer.resblocks:
+        if hasattr(blk, "adapter"):
+            continue
+        blk.adapter = ParallelAdapter(visual.transformer.width, bottleneck).to(device).float()
+
+        def forward(x, blk=blk):
+            x = x + blk.attention(blk.ln_1(x))
+            return x + blk.mlp(blk.ln_2(x)) + blk.adapter(x)
+        blk.forward = forward
+
+
+def add_bert_adapters(bert, bottleneck):
+    """Parallel adapter beside the FFN of every BERT layer (BertOutput): LN(ffn + x + adapter(x))."""
+    for layer in bert.encoder.layer:
+        out = layer.output
+        if hasattr(out, "adapter"):
+            continue
+        out.adapter = ParallelAdapter(bert.config.hidden_size, bottleneck).to(device).float()
+
+        def forward(hidden_states, input_tensor, out=out):
+            h = out.dropout(out.dense(hidden_states))
+            return out.LayerNorm(h + input_tensor + out.adapter(input_tensor))
+        out.forward = forward
+
 
 # Define the model in PyTorch
 class MAF(nn.Module):
-    def __init__(self, clip_model, num_classes, num_heads):
+    def __init__(self, clip_model, num_classes, num_heads, adapter_dim=0, freeze_bert=False, fix_attn=False):
         super(MAF, self).__init__()
+        self.fix_attn = fix_attn
 
         # Visual feature extractor (CLIP)
         self.clip = clip_model # Load the CLIP model
@@ -53,6 +95,11 @@ class MAF(nn.Module):
 
         # Textual feature extractor (BERT)
         self.bert = AutoModel.from_pretrained("sagorsarker/bangla-bert-base")
+        if freeze_bert:
+            for p in self.bert.parameters():
+                p.requires_grad = False
+            if adapter_dim > 0:
+                add_bert_adapters(self.bert, adapter_dim)
 
         # Multihead attention
         self.attention = MultiheadAttention(d_model=768, nhead=num_heads)
@@ -83,12 +130,22 @@ class MAF(nn.Module):
 
         # # Apply multihead attention between visual_features and BERT embeddings
         # # Assuming that visual_features and bert_output have shape (seq_length, batch_size, feature_size)
-        attention_output = self.attention(
-            query=image_features.permute(1, 0, 2),  # Swap batch_size and seq_length dimensions
-            key=bert_output.permute(1, 0, 2),  # Swap batch_size and seq_length dimensions
-            value=image_features.permute(1, 0, 2),  # Swap batch_size and seq_length dimensions
-            mask=None  # You can add a mask if needed
-        )
+        if self.fix_attn:
+            # image attends over the caption tokens: Value is the text (padding masked out),
+            # so the attention weights actually change the output
+            attention_output = self.attention(
+                query=image_features.permute(1, 0, 2),
+                key=bert_output.permute(1, 0, 2),
+                value=bert_output.permute(1, 0, 2),
+                key_padding_mask=(attention_mask == 0),
+            )
+        else:
+            attention_output = self.attention(
+                query=image_features.permute(1, 0, 2),  # Swap batch_size and seq_length dimensions
+                key=bert_output.permute(1, 0, 2),  # Swap batch_size and seq_length dimensions
+                value=image_features.permute(1, 0, 2),  # Swap batch_size and seq_length dimensions
+                mask=None  # You can add a mask if needed
+            )
 
         # Swap back the dimensions to (batch_size, seq_length, feature_size)
         attention_output = attention_output.permute(1, 0, 2)
@@ -114,17 +171,25 @@ def calculate_accuracy(predictions, targets):
 
 # num_epochs = 1
 
-def train(train_loader, val_loader, path, heads, epochs, lr_rate):
+def train(train_loader, val_loader, path, heads, epochs, lr_rate, adapter_dim=0, freeze_bert=False, fix_attn=False, head_lr=None):
+
+  if adapter_dim > 0:
+    add_clip_adapters(clip_model, adapter_dim)
 
   # Create an instance of the model
   num_classes = 5  # Number of output classes
   num_heads = heads  # Number of attention heads for multihead attention
-  model = MAF(clip_model, num_classes, num_heads)
+  model = MAF(clip_model, num_classes, num_heads, adapter_dim, freeze_bert, fix_attn)
   model = model.to(device)  
 
   # Define loss and optimizer
   criterion = nn.CrossEntropyLoss()
-  optimizer = torch.optim.AdamW(model.parameters(), lr=lr_rate,  weight_decay = 0.01)
+  pretrained = [p for n, p in model.named_parameters() if p.requires_grad and n.startswith("bert.") and ".adapter." not in n]
+  new = [p for n, p in model.named_parameters() if p.requires_grad and not (n.startswith("bert.") and ".adapter." not in n)]
+  groups = [{"params": new, "lr": head_lr or lr_rate}]
+  if pretrained:
+      groups.append({"params": pretrained, "lr": lr_rate})
+  optimizer = torch.optim.AdamW(groups, lr=lr_rate,  weight_decay = 0.01)
 
   # Define learning rate scheduler
   num_epochs = epochs
@@ -143,6 +208,12 @@ def train(train_loader, val_loader, path, heads, epochs, lr_rate):
   print("Attention Heads#:",heads)
   print("Epochs#:",epochs)
   print("Learning Rate:",lr_rate )
+  n_train = sum(p.numel() for p in model.parameters() if p.requires_grad)
+  n_all = sum(p.numel() for p in model.parameters())
+  n_adapt = sum(p.numel() for n, p in model.named_parameters() if ".adapter." in n)
+  print(f"freeze_bert={freeze_bert} fix_attn={fix_attn} head_lr={head_lr}")
+  print(f"Adapter dim: {adapter_dim} | adapter params: {n_adapt:,}")
+  print(f"Trainable params: {n_train:,} / {n_all:,}")
   print("--------------------------------")
   for epoch in range(num_epochs):
     model.train()
